@@ -10,7 +10,7 @@ in-process scheduler.
 
 ## Decision
 Python 3 + FastAPI (async, Pydantic validation, auto OpenAPI docs), SQLAlchemy 2 async +
-`asyncpg`, Alembic migrations (Phase-2), PostgreSQL, APScheduler in-process.
+`asyncpg`, Alembic migrations (Phase-3), PostgreSQL, APScheduler in-process.
 
 ## Alternatives considered
 - **Django/DRF:** heavier than needed for a handful of endpoints.

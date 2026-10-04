@@ -16,5 +16,5 @@ Manual dependency wiring via an `AppContainer` interface + `DefaultAppContainer`
 - **Koin:** lighter, still unnecessary at this size.
 
 ## Consequences
-- Revisit when the object graph grows (likely Phase-2/3: pairing, heartbeat client, WorkManager
+- Revisit when the object graph grows (likely Phase-3: pairing, heartbeat client, WorkManager
   workers). A switch would be a new ADR superseding this one.

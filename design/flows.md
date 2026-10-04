@@ -2,7 +2,7 @@
 
 **Version:** 0.1 (content as presented at Review 2; reorganized 2026-10-04)
 
-## 1. Pairing (FR-1, Phase-2)
+## 1. Pairing (FR-1, Phase-3)
 
 ```mermaid
 sequenceDiagram
@@ -18,7 +18,7 @@ sequenceDiagram
     A-->>E: Notify: caregiver linked
 ```
 
-## 2. Heartbeat & Dead-Man's-Switch Escalation (FR-4, Phase-2/3)
+## 2. Heartbeat & Dead-Man's-Switch Escalation (FR-4, Phase-3)
 
 ```mermaid
 sequenceDiagram

@@ -1,7 +1,8 @@
 # Runbook: Deploy kinsync-api (first install, update, rollback)
 
-**Last verified:** not yet verified against the live VM — drafted 2026-10-04 from kinsync-api
-`specs/deployment.md` (§4, §5, §9) at `8faf871`.
+**Last verified:** 2026-10-04 read-only — deployed commit `e5f0ca1` (code identical to the
+`review-2` tag `8faf871`, which only changed docs); working tree clean; installed unit file
+identical to `deploy/kinsync-api.service`; remote is HTTPS so `git pull` needs no credentials.
 
 ## Purpose / When to use
 - **A.** First install on a fresh VM (after [vm-provisioning-and-hardening.md](vm-provisioning-and-hardening.md)).
@@ -42,7 +43,7 @@ git fetch --tags
 git status --short                       # must be empty — no hand edits on the VM
 git checkout main && git pull --ff-only  # or: git checkout review-N
 .venv/bin/pip install -r requirements.txt
-# Phase-2+: .venv/bin/alembic upgrade head   (back up the DB first — see postgres runbook)
+# Phase-3+: .venv/bin/alembic upgrade head   (back up the DB first — see postgres runbook)
 exit
 sudo systemctl restart kinsync-api.service
 ```
@@ -67,13 +68,16 @@ sudo -iu kinsync
 cd /opt/kinsync-api
 git checkout <previous-sha-or-tag>       # e.g. review-2
 .venv/bin/pip install -r requirements.txt
-# Phase-2+: if a migration ran, `alembic downgrade <rev>` or restore the pre-deploy backup
+# Phase-3+: if a migration ran, `alembic downgrade <rev>` or restore the pre-deploy backup
 exit
 sudo systemctl restart kinsync-api.service
 ```
 Then run **Verify**.
 
 ## Troubleshooting
+- `fatal: detected dubious ownership` when running git as your admin user: the checkout belongs
+  to `kinsync`. Run git as `kinsync` (`sudo -iu kinsync`), or for a read-only peek:
+  `git -c safe.directory=/opt/kinsync-api -C /opt/kinsync-api log -1 --oneline`.
 - Service fails to start → `journalctl -u kinsync-api.service -n 100`. A `ValidationError` from
   pydantic means `.env` is missing a required value (`DATABASE_URL`).
 - `/health/db` 503 → [health-check-failures.md](health-check-failures.md).

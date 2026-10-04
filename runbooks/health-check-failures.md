@@ -1,6 +1,7 @@
 # Runbook: `/health` or `/health/db` failing (start here for any outage)
 
-**Last verified:** not yet verified against the live VM — drafted 2026-10-04.
+**Last verified:** 2026-10-04 — both health checks ok. Note: viewing `journalctl` for `caddy` /
+`kinsync-api` needs sudo (or membership of the `adm` / `systemd-journal` group).
 
 ## Purpose / When to use
 The app shows "Backend unreachable", a demo curl fails, or anything looks down.

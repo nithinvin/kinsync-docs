@@ -4,7 +4,7 @@
 
 ## 1. Backend (PostgreSQL) — target schema
 
-Phase-1 has **no tables yet** (connectivity only). This schema goes live in Phase-2 via Alembic
+Phase-1 has **no tables yet** (connectivity only). This schema goes live in Phase-3 via Alembic
 migrations.
 
 ```mermaid
@@ -68,5 +68,7 @@ schema-level enforcement of the privacy principle (NFR-1, FR-7.2).
 |---|---|---|
 | `UnlockEvent` | `eventType` (`UnlockEventType`), `timestampEpochMillis` | Phase-1 |
 
-Nothing else — no app names, no location, no content. Usage-window and motion entities arrive in
-Phase-2.
+Phase-2 (planned): app-usage intervals (package, start, end), motion timestamps (last moved),
+activity transitions, charging and call events (times/counts only) — all on-device only; app
+names never leave the phone (NFR-1).
+Exact entities are recorded here when implemented.

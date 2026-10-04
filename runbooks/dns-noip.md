@@ -1,15 +1,15 @@
 # Runbook: DNS — noip.com hostname `kinsync.ddns.net`
 
-**Last verified:** not yet verified — drafted 2026-10-04. Fill in the account owner and the date
-of the last confirmation below.
+**Last verified:** 2026-10-04 — `kinsync.ddns.net` resolves to the VM; no noip update client is
+installed on the VM (not needed: Hetzner IP is static).
 
 | Item | Value |
 |---|---|
 | Hostname | `kinsync.ddns.net` |
 | Provider | noip.com (free tier) — [ADR-0005](../design/decisions/0005-noip-dynamic-dns.md) |
-| Account owner | _(team: which teammate's noip account — do not write the email here)_ |
-| Last hostname confirmation | _(YYYY-MM-DD)_ |
-| Next confirmation due | _(last + 30 days)_ |
+| Account owner | Nithin's noip.com account (login email kept privately, not in this public repo) |
+| Confirmation | Done by the team every 30 days (reminder email from noip) |
+| Last hostname confirmation | _(YYYY-MM-DD — fill in after each confirmation)_ |
 
 ## Purpose / When to use
 - **Every month:** free noip hostnames **expire unless confirmed every 30 days**. noip emails a

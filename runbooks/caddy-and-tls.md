@@ -1,7 +1,8 @@
 # Runbook: Caddy reverse proxy and TLS
 
-**Last verified:** not yet verified against the live VM — drafted 2026-10-04 from kinsync-api
-`specs/deployment.md` (§6).
+**Last verified:** 2026-10-04 read-only — Caddy v2.11.4 active; `/etc/caddy/Caddyfile` = stock
+comment header + the same `kinsync.ddns.net` block as `deploy/Caddyfile`; HTTPS `/health` and
+`/health/db` return ok. Caddy manages its own certificates; it does not use certbot.
 
 ## Purpose / When to use
 - Installing Caddy on a new VM.

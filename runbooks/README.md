@@ -22,13 +22,23 @@ and for demo devices. Write them so a teammate who has never done the task can f
 |---|---|
 | Public hostname | `kinsync.ddns.net` (noip.com free DDNS) |
 | Host | Hetzner Cloud VM, Ubuntu 26.04, CX22-class |
-| Public ports | 22 (SSH), 80 (ACME/redirect), 443 (HTTPS) |
-| App | `/opt/kinsync-api`, systemd `kinsync-api.service`, Uvicorn on `127.0.0.1:8000`, user `kinsync` |
+| Public ports used by KinSync | 22 (SSH), 80 (ACME/redirect), 443 (HTTPS) |
+| App | `/opt/kinsync-api` (git checkout of `main`, HTTPS remote), venv Python 3.14, systemd `kinsync-api.service`, Uvicorn on `127.0.0.1:8000`, user `kinsync` |
 | Config / secrets | `/opt/kinsync-api/.env` (mode 600) — never in git |
 | Reverse proxy | Caddy, `/etc/caddy/Caddyfile`, `caddy.service` |
-| Database | PostgreSQL (distro package, `postgresql@<ver>-main`), DB `kinsync`, role `kinsync`, localhost only |
-| Backups | `/var/backups/kinsync/*.sql.gz`, nightly cron as `kinsync` |
+| Database | PostgreSQL 18 (`postgresql@18-main`; v16 binaries also installed, no 16 cluster running), DB `kinsync`, role `kinsync`, localhost only |
+| Backups | `/var/backups/kinsync/*.sql.gz`, nightly cron as `kinsync` — **not set up yet** (see [runbook](postgres-backup-restore.md)) |
 | Versioned copies of configs | kinsync-api [`deploy/`](https://github.com/nithinvin/kinsync-api/tree/main/deploy) |
+| Admin access | Admin users have sudo **with password** — automation/AI can only do read-only checks |
+
+### Shared VM — other workloads (not KinSync)
+
+The VM also hosts other, non-KinSync services and user accounts (details are kept in the team's
+private notes, not in this public repo). KinSync runbooks must not touch them. Keep in mind:
+- Resource contention (RAM/disk) affects the API — check `free -h`, `df -h /` during incidents.
+- The firewall therefore allows more than KinSync's 22/80/443.
+- Docker is installed: it publishes container ports by editing iptables directly, **bypassing
+  ufw** — a container started with `-p` is public even if ufw says otherwise.
 
 ## Access
 

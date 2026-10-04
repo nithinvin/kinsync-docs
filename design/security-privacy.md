@@ -8,7 +8,7 @@
 | Control | Where | Status |
 |---|---|---|
 | Raw events stored only in on-device Room DB | Android `data/`, `collector/` | ✅ Phase-1 |
-| Only derived signals (heartbeat + expected window) transmitted | Android Heartbeat Sync Client | ⏳ Phase-2 |
+| Only derived signals (heartbeat + expected window) transmitted | Android Heartbeat Sync Client | ⏳ Phase-3 |
 | No raw-activity table exists on the backend | [data-model.md](data-model.md) | By design |
 | FCM used only as a wake-up relay; minimal push payload (elder name, alert type, time) | Notification Service | ⏳ Phase-3 |
 | Collection never starts without consent (also after reboot) | `BootCompletedReceiver` checks onboarding | ✅ Phase-1 |
@@ -21,19 +21,19 @@
 - `UnlockEventReceiver` is registered with `RECEIVER_NOT_EXPORTED` — no other app can trigger it.
 - Backend base URL validated as `https://` at startup (`BackendConfig.requireHttps`); cleartext
   traffic stays disabled.
-- From Phase-2: backend-issued tokens stored in `EncryptedSharedPreferences` / Android Keystore.
+- From Phase-3: backend-issued tokens stored in `EncryptedSharedPreferences` / Android Keystore.
 - Logs never contain raw activity content or tokens.
 
 ## 3. Backend / VM
 
-> VM statuses below follow the Phase-1 deployment guide and have not been independently
-> re-verified yet. Confirm each against the VM (read-only) and record the date in the matching
-> runbook's "Last verified" line.
+> Read-only audit 2026-10-04 (no sudo): see
+> [vm-provisioning-and-hardening § Audit results](../runbooks/vm-provisioning-and-hardening.md#audit-results-2026-10-04).
+> The VM is shared with non-KinSync services, so the firewall allows more than 22/80/443.
 
 | Control | Status |
 |---|---|
 | TLS everywhere via Caddy + Let's Encrypt | ✅ |
-| `ufw`: only 22/80/443 inbound | ✅ |
+| `ufw` enabled; KinSync needs only 22/80/443 inbound | 🟡 rules not readable without sudo; VM is shared |
 | SSH key-only, root login disabled | ✅ |
 | `fail2ban` | ✅ |
 | unattended-upgrades | ✅ |
@@ -41,8 +41,8 @@
 | PostgreSQL listens on localhost only; port 5432 not opened | ✅ |
 | systemd sandboxing (`NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=full`, `ProtectHome`) | ✅ |
 | Secrets only in `/opt/kinsync-api/.env` (mode 600), never in git | ✅ |
-| Device-bound bearer tokens | ⏳ Phase-2 |
-| Nightly `pg_dump` backups + tested restore | 🟡 verify — see [runbook](../runbooks/postgres-backup-restore.md) |
+| Device-bound bearer tokens | ⏳ Phase-3 |
+| Nightly `pg_dump` backups (peer auth, no stored password) + tested restore | ❌ not set up yet — [runbook](../runbooks/postgres-backup-restore.md) |
 
 ## 4. Public repositories
 

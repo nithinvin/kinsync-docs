@@ -1,7 +1,7 @@
 # Runbook: VM provisioning and hardening
 
-**Last verified:** not yet verified against the live VM — drafted 2026-10-04 from kinsync-api
-`specs/deployment.md` (§1–3) at `8faf871`.
+**Last verified:** 2026-10-04, read-only audit without sudo (results in *Audit results* below).
+Steps drafted from kinsync-api `specs/deployment.md` (§1–3) at `8faf871`.
 
 ## Purpose / When to use
 - Building a replacement VM from scratch.
@@ -85,6 +85,19 @@ systemctl list-units 'postgresql*' --no-pager # active
 sudo ss -tlnp | grep -E ':5432|:8000'         # both bound to 127.0.0.1 only
 lsb_release -d; uptime; df -h /               # OS, uptime, disk
 ```
+
+## Audit results (2026-10-04)
+
+| Check | Result |
+|---|---|
+| OS | Ubuntu 26.04.1 LTS, kernel 7.0.0-30, 38 GB disk 47% used, 3.7 GiB RAM |
+| SSH | `PasswordAuthentication no`, `PermitRootLogin no` ✅ |
+| unattended-upgrades | active; both `20auto-upgrades` values `"1"` ✅ |
+| fail2ban | service active ✅ (jail list needs sudo — not checked) |
+| ufw rules | needs sudo — not checked. External probe: 22/80/443 open; 5432 and 8000 closed ✅. Other open ports belong to non-KinSync services |
+| PostgreSQL | bound to `127.0.0.1` / `::1` only ✅ |
+| Uvicorn | bound to `127.0.0.1:8000` only ✅ |
+| Other workloads | Present — see [README](README.md#shared-vm--other-workloads-not-kinsync) |
 
 ## Rollback
 - Locked out of SSH: Hetzner Cloud console → **Console** (VNC) → revert `sshd_config` → restart ssh.

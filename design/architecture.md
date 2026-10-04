@@ -83,12 +83,13 @@ Each module is tagged with the phase it's first introduced in (see
 | Module | Responsibility | Phase |
 |---|---|---|
 | **Onboarding & Consent UI** | Role selection (Elder/Caregiver), plain-language consent screen, permission rationale | Phase 1 (basic) → refined Phase 4 |
-| **Event Collector** | `BroadcastReceiver` for unlock/screen events, `UsageStatsManager` queries, Activity Recognition | Phase 1 (unlock events) → Phase 2 (usage + motion) |
+| **Event Collector** | `BroadcastReceiver` for unlock/screen events, `UsageStatsManager` queries, last-moved (significant motion), Activity Recognition, charging + call events | Phase 1 (unlock events) → Phase 2 (usage, motion, activity, charging, calls) |
 | **Local Storage** | Room database for raw events, on-device only | Phase 1 |
-| **Baseline Engine** | Rolling statistics over the local event log | Phase 2 |
-| **Deviation Detector** | Periodic `WorkManager` job comparing today vs. baseline; in-app nudge | Phase 2–3 |
-| **Heartbeat Sync Client** | Sends derived heartbeat + expected window to backend | Phase 2 |
-| **Pairing UI** | Generate/redeem pairing codes | Phase 2 |
+| **Baseline Engine** | Rolling statistics over the local event log | Phase 3 |
+| **Deviation Detector** | Periodic `WorkManager` job comparing today vs. baseline; in-app nudge | Phase 3 |
+| **Heartbeat Sync Client** | Sends derived heartbeat + expected window to backend | Phase 3 |
+| **Pairing UI** | Generate/redeem pairing codes | Phase 3 |
+| **Activity Views** | "My day" timeline + daily summary of collected signals (on-device only) | Phase 2 |
 | **Caregiver Dashboard UI** | Status view, activity trend, acknowledge/resolve alerts | Phase 4 |
 
 Current package layout: see kinsync-android
@@ -99,9 +100,9 @@ Current package layout: see kinsync-android
 | Module | Responsibility | Phase |
 |---|---|---|
 | **API Layer** | FastAPI routers behind Caddy; starts as a bare health-check | Phase 1 (health check) → grows each phase |
-| **Data Layer** | SQLAlchemy models + Alembic migrations against PostgreSQL | Phase 1 (connectivity only) → Phase 2 (real schema) |
-| **Auth** | Device-bound bearer token issuance/validation | Phase 2 |
-| **Pairing Service** | Pairing-code generation/redemption logic | Phase 2 |
+| **Data Layer** | SQLAlchemy models + Alembic migrations against PostgreSQL | Phase 1 (connectivity only) → Phase 3 (real schema) |
+| **Auth** | Device-bound bearer token issuance/validation | Phase 3 |
+| **Pairing Service** | Pairing-code generation/redemption logic | Phase 3 |
 | **Scheduler (dead-man's switch)** | Periodic job checking every elder's heartbeat against their expected window | Phase 3 |
 | **Notification Service** | FCM Admin SDK wrapper, sends escalation pushes | Phase 3 |
 | **Ops/Deployment** | systemd units, Caddy config, firewall, backups | Phase 1 (minimal) → hardened through later phases |

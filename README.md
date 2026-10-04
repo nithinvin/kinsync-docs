@@ -10,7 +10,7 @@ AY 2026–27).
 
 | | |
 |---|---|
-| **Status** | Phase-1 done (Review II) · Phase-2 in planning for Review III (12–16 Oct 2026) — see [plan/roadmap.md](plan/roadmap.md) |
+| **Status** | Phase-1 done (Review II) · Phase-2 (on-device data collection + visualisation) in planning for Review III (12–16 Oct 2026) — see [plan/roadmap.md](plan/roadmap.md) |
 | **Backend** | [nithinvin/kinsync-api](https://github.com/nithinvin/kinsync-api) — live at `https://kinsync.ddns.net` (`/health`, `/health/db`) |
 | **Android app** | [nithinvin/kinsync-android](https://github.com/nithinvin/kinsync-android) |
 | **Team** | _(names / roles)_ · **Guide:** _(name)_ |
@@ -47,6 +47,10 @@ The three repos are meant to be cloned side by side:
 ├── kinsync-android/
 └── kinsync-docs/
 ```
+
+## License
+
+[Apache-2.0](LICENSE), same as the code repos.
 
 ## History
 

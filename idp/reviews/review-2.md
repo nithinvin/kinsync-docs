@@ -16,11 +16,11 @@
 
 ## Feedback / observations received
 
-> **Must be filled before Review III** — Review III awards marks for follow-up on these.
+Overall the panel was satisfied with the demo.
 
 | # | Observation | From | Our response / action | Tracked in | Status |
 |---|---|---|---|---|---|
-| 1 | _(team to fill)_ | | | [phase-2](../../plan/phase-2.md) #0 | ⏳ |
+| 1 | Not clear which features are going to be implemented | Panel | Phase-2 re-scoped to make all on-device data collection visible (app usage, phone movement, unlocks) with timeline + summary screens; present a feature → phase → status map at Review III | [phase-2](../../plan/phase-2.md) #0–#5 | ⏳ |
 
 ## Individual contributions this review
 | Member | Work done |

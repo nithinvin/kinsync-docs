@@ -24,6 +24,8 @@ Requirement IDs (FR-x.y, NFR-x) are stable. Never renumber; mark retired IDs as 
 - **FR-2.4** All raw collected events shall be stored only in a local on-device database; raw events must never be transmitted off-device.
 - **FR-2.5** The elder shall be able to view a plain-language log of what has been collected (transparency screen).
 - **FR-2.6** The elder shall be able to pause/snooze collection for a defined period (e.g., a "traveling" mode).
+- **FR-2.7** *(Added 2026-10-04 — Review II follow-up)* The app shall record when the phone was **last moved**, using a minimally invasive motion check (e.g. the significant-motion sensor rather than continuous accelerometer sampling). Only the motion timestamps are stored, on-device; raw sensor samples are not kept. No step counting. This is **not** fall detection (see non-goals).
+- **FR-2.8** *(Added 2026-10-04 — Review II follow-up)* The app shall record additional passive signals on-device — charging / plug-in events and call activity (counts and times only, no numbers or contacts) — subject to the elder's consent and the required Android permissions.
 
 ### FR-3 — Baseline Learning
 - **FR-3.1** The app shall compute a rolling baseline (default 14-day window, configurable) of typical first-unlock time, active windows, and unlock frequency.
