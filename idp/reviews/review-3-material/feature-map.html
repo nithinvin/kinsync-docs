@@ -1,0 +1,285 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KinSync Feature Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a day-rhythm "timeline strip" of reviews, then three colour-coded lanes — built (green),
+   proposed for Review III (amber), later phases (teal / indigo / plum) — cards in wrapping grids. */
+:root {
+  --bg: #f6f7f4;
+  --surface: #ffffff;
+  --ink: #1d2421;
+  --muted: #5b6661;
+  --line: #dde3df;
+  --done: #2f8f5b;      --done-soft: #e3f3e9;
+  --now: #d9821f;       --now-soft: #fdf0de;
+  --p3: #1f8a8a;        --p3-soft: #ddf2f1;
+  --p4: #4c5fc7;        --p4-soft: #e6e9fa;
+  --p5: #9a4c9e;        --p5-soft: #f3e5f3;
+  --out: #8a9590;       --out-soft: #eef0ef;
+  --android: #3b7d3f;   --backend: #2f5fa8;   --docs: #8a5a1f;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141917; --surface: #1c2320; --ink: #e9eeeb; --muted: #a3b0aa; --line: #2e3833;
+  --done: #5cc48a; --done-soft: #1d3326; --now: #f0a54a; --now-soft: #3a2a14;
+  --p3: #4fc4c2; --p3-soft: #163233; --p4: #8b9bf0; --p4-soft: #22274a; --p5: #d08ad4; --p5-soft: #35213a;
+  --out: #8f9a95; --out-soft: #242b28; --android: #7fc483; --backend: #7fa8ea; --docs: #d9a865;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141917; --surface: #1c2320; --ink: #e9eeeb; --muted: #a3b0aa; --line: #2e3833;
+  --done: #5cc48a; --done-soft: #1d3326; --now: #f0a54a; --now-soft: #3a2a14;
+  --p3: #4fc4c2; --p3-soft: #163233; --p4: #8b9bf0; --p4-soft: #22274a; --p5: #d08ad4; --p5-soft: #35213a;
+  --out: #8f9a95; --out-soft: #242b28; --android: #7fc483; --backend: #7fa8ea; --docs: #d9a865;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 48px; display: grid; gap: 34px; }
+
+header { display: grid; gap: 10px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 5vw, 48px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 span { color: var(--now); }
+.lede { margin: 0; max-width: 68ch; color: var(--muted); font-size: 16px; }
+
+/* review strip */
+.strip { overflow-x: auto; padding-top: 26px; }
+.reviews { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 0; min-width: 840px; position: relative; }
+.rv { padding: 12px 12px 14px; border-top: 6px solid var(--c); background: var(--soft); display: grid; gap: 2px; position: relative; }
+.rv + .rv { border-left: 2px solid var(--bg); }
+.rv b { font-family: var(--font-display); font-size: 15px; }
+.rv .d { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+.rv .t { font-size: 12.5px; }
+.rv .m { font-family: var(--font-mono); font-size: 11.5px; color: var(--c); font-weight: 500; }
+.rv.here::after { content: "WE ARE HERE"; position: absolute; top: -26px; left: 10px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; color: var(--now); }
+.rv.here { outline: 2px dashed var(--now); outline-offset: -2px; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; font-size: 13px; color: var(--muted); }
+.legend > span { display: inline-flex; align-items: center; gap: 7px; }
+
+/* chips */
+.chip { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+.must { background: var(--now); color: #fff; }
+.nice { border: 1.5px dashed var(--now); color: var(--now); }
+.who { border: 1px solid currentColor; }
+.who.a { color: var(--android); } .who.b { color: var(--backend); } .who.d { color: var(--docs); }
+.req { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+/* lanes */
+section.lane { display: grid; gap: 14px; }
+.lane-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; border-bottom: 3px solid var(--c); padding-bottom: 8px; }
+.lane-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 26px; margin: 0; color: var(--c); }
+.lane-head p { margin: 0; color: var(--muted); font-size: 14px; }
+.count { font-family: var(--font-mono); font-size: 12px; background: var(--c); color: var(--bg); padding: 2px 8px; border-radius: 99px; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin: 6px 0 0; display: flex; align-items: center; gap: 8px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 6px; padding: 11px 13px; display: grid; gap: 5px; align-content: start; min-width: 0; break-inside: avoid; }
+.card h4 { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.3; }
+.card p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.done .card h4::before { content: "✓ "; color: var(--done); }
+.nicecard { border-style: dashed; border-left-style: solid; background: transparent; }
+
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; }
+.phase { background: var(--soft); border-radius: 8px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.phase-title { display: grid; gap: 2px; }
+.phase-title b { font-family: var(--font-display); font-size: 19px; color: var(--c); }
+.phase-title span { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+.phase ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.phase li { background: var(--surface); border-radius: 5px; padding: 8px 10px; display: grid; gap: 3px; font-size: 13.5px; }
+.phase li strong { font-size: 14px; }
+.phase li .meta { gap: 4px; }
+
+.note { background: var(--now-soft); border: 1px solid var(--now); border-radius: 6px; padding: 10px 14px; font-size: 14px; }
+.foot { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+.box { border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; background: var(--surface); display: grid; gap: 6px; }
+.box h3 { margin: 0; }
+.box ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--muted); display: grid; gap: 3px; }
+.small { font-size: 12px; color: var(--muted); }
+
+@media print {
+  :root { --bg:#fff; }
+  body { font-size: 11px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .wrap { padding-block: 0; gap: 16px; max-width: none; padding-inline: 0; }
+  .strip { overflow: visible; } .reviews { min-width: 0; }
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .card { padding: 8px 10px; } .card p, .phase li { font-size: 11.5px; }
+  .phases { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .card, .phase li, .box, .lane-head, .note { break-inside: avoid; }
+  h3, .lane-head { break-after: avoid; }
+  @page { size: A4 landscape; margin: 9mm; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">BACSE291 Innovative Design Project · VIT Chennai · AY 2026–27 · as of 4 Oct 2026</div>
+    <h1>KinSync Feature Map: <span>what's built, what's next</span></h1>
+    <p class="lede">KinSync quietly learns an elderly person's normal phone rhythm on their own phone, and alerts family when that rhythm goes silent. Raw activity data never leaves the phone. This map shows every planned feature against the IDP review schedule.</p>
+  </header>
+
+  <div class="strip" role="region" aria-label="Review schedule">
+    <div class="reviews">
+      <div class="rv" style="--c:var(--done);--soft:var(--done-soft)"><b>Review I</b><span class="d">17–21 Aug 2026</span><span class="t">Problem, objectives, survey</span><span class="m">5 marks · done</span></div>
+      <div class="rv" style="--c:var(--done);--soft:var(--done-soft)"><b>Review II</b><span class="d">21–25 Sep 2026</span><span class="t">~20% · design + first prototype</span><span class="m">20 marks · done</span></div>
+      <div class="rv here" style="--c:var(--now);--soft:var(--now-soft)"><b>Review III</b><span class="d">12–16 Oct 2026</span><span class="t">~30% · Phase 2</span><span class="m">10 marks · next</span></div>
+      <div class="rv" style="--c:var(--p3);--soft:var(--p3-soft)"><b>Review IV</b><span class="d">25–29 Jan 2027</span><span class="t">~50% · Phase 3</span><span class="m">15 marks</span></div>
+      <div class="rv" style="--c:var(--p4);--soft:var(--p4-soft)"><b>Review V</b><span class="d">8–12 Mar 2027</span><span class="t">~80% · Phase 4</span><span class="m">25 marks</span></div>
+      <div class="rv" style="--c:var(--p5);--soft:var(--p5-soft)"><b>Review VI</b><span class="d">29 Mar–2 Apr 2027</span><span class="t">100% · Open House</span><span class="m">15 marks</span></div>
+      <div class="rv" style="--c:var(--p5);--soft:var(--p5-soft)"><b>Report</b><span class="d">2 Apr 2027</span><span class="t">Final report</span><span class="m">10 marks</span></div>
+    </div>
+  </div>
+
+  <div class="legend" aria-label="Legend">
+    <span><span class="chip must">Must-have</span> needed for the review demo</span>
+    <span><span class="chip nice">Nice-to-have</span> if time allows</span>
+    <span><span class="chip who a">Android</span> phone app · Sri Hasini</span>
+    <span><span class="chip who b">Backend</span> server · Nithin</span>
+    <span><span class="chip who d">Docs</span></span>
+    <span><span class="req">FR-2.1</span> requirement ID</span>
+  </div>
+
+  <!-- BUILT -->
+  <section class="lane done" style="--c:var(--done)">
+    <div class="lane-head"><h2>Built and demoed</h2><span class="count">17 features</span><p>Phase 1, shown at Review II (25 Sep 2026)</p></div>
+
+    <h3><span class="chip who a">Android</span> Elder's phone</h3>
+    <div class="grid">
+      <div class="card"><h4>Consent screen</h4><p>Plain-language explanation before anything is collected.</p><div class="meta"><span class="req">FR-7.1 · early version</span></div></div>
+      <div class="card"><h4>Usage-access permission</h4><p>Rationale screen, then a deep link to Android Settings.</p><div class="meta"><span class="req">FR-2.2</span></div></div>
+      <div class="card"><h4>Battery-optimisation exemption</h4><p>Keeps collection alive; also asks for notification permission on Android 13+.</p><div class="meta"><span class="req">NFR-2</span></div></div>
+      <div class="card"><h4>Unlock and screen on/off capture</h4><p>Runs in a foreground service so the phone maker's battery saver doesn't kill it.</p><div class="meta"><span class="req">FR-2.1</span></div></div>
+      <div class="card"><h4>Restarts after reboot</h4><p>Only if the elder has already given consent.</p><div class="meta"><span class="req">NFR-2 · FR-7.1</span></div></div>
+      <div class="card"><h4>On-phone database</h4><p>Events stored locally in Room. Nothing is uploaded.</p><div class="meta"><span class="req">FR-2.4 · NFR-1</span></div></div>
+      <div class="card"><h4>Live event list</h4><p>Debug screen showing new unlock events within seconds.</p><div class="meta"><span class="req">FR-2.5 · precursor</span></div></div>
+      <div class="card"><h4>Stop monitoring</h4><p>Revokes consent on the phone and stops collection.</p><div class="meta"><span class="req">FR-7.3 · partial</span></div></div>
+      <div class="card"><h4>Backend reachability check</h4><p>Calls the server's health check on launch; HTTPS only.</p><div class="meta"><span class="req">NFR-4</span></div></div>
+      <div class="card"><h4>Large-text theme</h4><p>Bigger type throughout for elderly users.</p><div class="meta"><span class="req">NFR-6</span></div></div>
+    </div>
+
+    <h3><span class="chip who b">Backend</span> Server at kinsync.ddns.net</h3>
+    <div class="grid">
+      <div class="card"><h4>Hardened cloud server</h4><p>Hetzner VM, Ubuntu 26.04: key-only SSH, firewall, fail2ban, automatic security updates.</p><div class="meta"><span class="req">NFR-4</span></div></div>
+      <div class="card"><h4>HTTPS with automatic certificates</h4><p>Caddy reverse proxy with Let's Encrypt.</p><div class="meta"><span class="req">NFR-4</span></div></div>
+      <div class="card"><h4>API service</h4><p>FastAPI running as a system service that restarts itself on failure.</p><div class="meta"><span class="req">NFR-2</span></div></div>
+      <div class="card"><h4>PostgreSQL database</h4><p>Reachable only from the server itself.</p><div class="meta"><span class="req">NFR-4</span></div></div>
+      <div class="card"><h4>Health endpoints</h4><p><code>/health</code> and <code>/health/db</code>, live.</p><div class="meta"><span class="req">Phase 1</span></div></div>
+      <div class="card"><h4>Automated quality gate</h4><p>Lint, type checks, complexity limits and tests with at least 90% coverage.</p><div class="meta"><span class="req">NFR-7</span></div></div>
+    </div>
+
+    <h3><span class="chip who d">Docs</span> Project documentation</h3>
+    <div class="grid">
+      <div class="card"><h4>Specs, design, plan and runbooks</h4><p>Requirements, architecture, roadmap with commit numbers, operating procedures, traceability matrix.</p><div class="meta"><span class="req">kinsync-docs</span></div></div>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section class="lane" style="--c:var(--now)">
+    <div class="lane-head"><h2>Proposed for Review III</h2><span class="count">13 features</span><p>Phase 2 · 12–16 Oct 2026 · collect every signal on the phone and show it</p></div>
+    <p class="note"><b>Answers the Review II panel:</b> "which features will be implemented?" The whole phase happens on the phone and nothing new leaves it. <b>Awaiting team approval.</b></p>
+
+    <h3><span class="chip must">Must-have</span></h3>
+    <div class="grid">
+      <div class="card"><h4>App-usage pattern</h4><p>Which apps were used and when, read every few minutes.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.2</span></div></div>
+      <div class="card"><h4>Last moved</h4><p>Uses the phone's low-power "significant motion" sensor and stores only the time. No step counting.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.7</span></div></div>
+      <div class="card"><h4>Activity: still, walking, in vehicle</h4><p>Google Activity Recognition, with a permission screen in plain language.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.3</span></div></div>
+      <div class="card"><h4>"My day" timeline</h4><p>All signals on one 24-hour view, with a day picker.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.5</span></div></div>
+      <div class="card"><h4>Daily summary</h4><p>First unlock, unlock count, screen time, top apps, last moved, time per activity.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.5</span></div></div>
+      <div class="card"><h4>Consent screen lists every signal</h4><p>The elder sees exactly what is collected before it starts.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-7.1</span></div></div>
+      <div class="card"><h4>Tests for every new collector</h4><p>Database tests on the device, logic tests on the computer.</p><div class="meta"><span class="chip who a">Android</span><span class="req">NFR-7</span></div></div>
+      <div class="card"><h4>Feature map for the panel</h4><p>This page, kept up to date.</p><div class="meta"><span class="chip who d">Docs</span></div></div>
+    </div>
+
+    <h3><span class="chip nice">Nice-to-have</span></h3>
+    <div class="grid">
+      <div class="card nicecard"><h4>Charging events</h4><p>Plugged-in and unplugged times. No permission needed.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.8</span></div></div>
+      <div class="card nicecard"><h4>Call activity</h4><p>Number and times of calls only, never numbers or contacts. Needs a sensitive permission.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.8</span></div></div>
+      <div class="card nicecard"><h4>30-day auto-delete</h4><p>Raw events older than 30 days are removed from the phone.</p><div class="meta"><span class="chip who a">Android</span><span class="req">NFR-1</span></div></div>
+      <div class="card nicecard"><h4>First battery measurement</h4><p>24 hours with and without collection, compared against the 5% target.</p><div class="meta"><span class="chip who a">Android</span><span class="req">NFR-3</span></div></div>
+      <div class="card nicecard"><h4>Draft of the Phase 3 API design</h4><p>Data shapes for pairing, devices and heartbeat, so the backend is ready to start.</p><div class="meta"><span class="chip who b">Backend</span></div></div>
+    </div>
+  </section>
+
+  <!-- LATER -->
+  <section class="lane" style="--c:var(--p4)">
+    <div class="lane-head"><h2>Remaining phases</h2><span class="count">24 features</span><p>Review IV to the Open House · Jan–Apr 2027</p></div>
+    <div class="phases">
+      <div class="phase" style="--c:var(--p3);--soft:var(--p3-soft)">
+        <div class="phase-title"><b>Phase 3 · Review IV</b><span>25–29 Jan 2027 · ~50% · core logic + first alert</span></div>
+        <ul>
+          <li><strong>Baseline learning</strong>Rolling 14-day pattern, ready after 7 days.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-3</span></div></li>
+          <li><strong>Deviation check + "Everything OK?" nudge</strong>Asks the elder before alarming anyone.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-4.1–4.3</span></div></li>
+          <li><strong>Elder / Caregiver role choice</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-1.1</span></div></li>
+          <li><strong>Pairing with a 6-digit code</strong>Up to 3 caregivers per elder.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="chip who b">Backend</span><span class="req">FR-1.2–1.4</span></div></li>
+          <li><strong>Device registration + secure tokens</strong><div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">NFR-4</span></div></li>
+          <li><strong>Server database tables</strong>Elders, caregivers, pairings, heartbeats, alerts. No raw activity table.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">FR-7.2</span></div></li>
+          <li><strong>Heartbeat from the phone</strong>Sends only "I'm OK" plus the expected check-in window.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="chip who b">Backend</span><span class="req">FR-7.2</span></div></li>
+          <li><strong>Dead-man's switch</strong>The server raises an alert when a heartbeat is missed, even if the phone is off.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">FR-4.4</span></div></li>
+          <li><strong>Push alert to caregivers</strong>Firebase Cloud Messaging.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">FR-4.5 · FR-5</span></div></li>
+          <li><strong>Nightly database backups</strong>Needed before real data exists.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span></div></li>
+        </ul>
+      </div>
+      <div class="phase" style="--c:var(--p4);--soft:var(--p4-soft)">
+        <div class="phase-title"><b>Phase 4 · Review V</b><span>8–12 Mar 2027 · ~80% · caregiver side + validation</span></div>
+        <ul>
+          <li><strong>Caregiver dashboard</strong>Status for each elder: normal, nudged or escalated.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-6.1</span></div></li>
+          <li><strong>Acknowledge and resolve alerts</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="chip who b">Backend</span><span class="req">FR-6.3 · FR-4.6</span></div></li>
+          <li><strong>Activity trend for caregivers</strong>Aggregated only: no timestamps or app names.<div class="meta"><span class="chip nice">Nice</span><span class="chip who a">Android</span><span class="req">FR-6.2</span></div></li>
+          <li><strong>Transparency screen</strong>Everything collected, in plain language.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-2.5</span></div></li>
+          <li><strong>Pause / travel mode</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">FR-2.6</span></div></li>
+          <li><strong>View and remove caregivers; revoking consent unpairs everyone</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="chip who b">Backend</span><span class="req">FR-1.5 · FR-7.3</span></div></li>
+          <li><strong>Pilot users and threshold tuning</strong>Fewer false alarms.<div class="meta"><span class="chip must">Must</span><span class="req">G3</span></div></li>
+          <li><strong>Battery target: under 5% extra a day</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">NFR-3</span></div></li>
+          <li><strong>Test plan and results</strong>End-to-end and reliability tests.<div class="meta"><span class="chip must">Must</span><span class="req">NFR-2</span></div></li>
+        </ul>
+      </div>
+      <div class="phase" style="--c:var(--p5);--soft:var(--p5-soft)">
+        <div class="phase-title"><b>Phase 5 · Open House + Report</b><span>29 Mar–2 Apr 2027 · 100%</span></div>
+        <ul>
+          <li><strong>Polish and accessibility pass</strong><div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="req">NFR-6</span></div></li>
+          <li><strong>Performance evaluation</strong>Alert delay, false-alarm rate, battery.<div class="meta"><span class="chip must">Must</span><span class="req">G1 · G3</span></div></li>
+          <li><strong>Open House demo kit</strong>Two phones, live alert, backup video.<div class="meta"><span class="chip must">Must</span></div></li>
+          <li><strong>Final report</strong>In the prescribed format.<div class="meta"><span class="chip must">Must</span><span class="chip who d">Docs</span></div></li>
+          <li><strong>SMS fallback for caregivers</strong><div class="meta"><span class="chip nice">Nice</span><span class="chip who b">Backend</span><span class="req">FR-5.3</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="box">
+      <h3>The privacy promise</h3>
+      <ul>
+        <li>Raw data (unlocks, app names, motion, calls) stays on the phone.</li>
+        <li>Only an "I'm OK" heartbeat and the expected check-in window are sent to the server.</li>
+        <li>The server has no table that could hold raw activity.</li>
+        <li>No GPS location, ever.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Out of scope for version 1</h3>
+      <ul>
+        <li>Fall detection and medical diagnosis</li>
+        <li>Step counting and continuous GPS tracking</li>
+        <li>Wearables, iOS, audio or video monitoring</li>
+        <li>Multiple languages; more than 3 caregivers per elder</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Where the details live</h3>
+      <ul>
+        <li>github.com/nithinvin/kinsync-docs: specs, design, roadmap</li>
+        <li>github.com/nithinvin/kinsync-android: phone app</li>
+        <li>github.com/nithinvin/kinsync-api: server</li>
+      </ul>
+      <p class="small">Phase 2 and later are plans. Priorities may change after each review.</p>
+    </div>
+  </div>
+</div>
+</html>
