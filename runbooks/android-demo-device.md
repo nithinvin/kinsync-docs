@@ -59,7 +59,8 @@ resort only, and only after the backup in step 2.
 ## Troubleshooting
 | Symptom | Fix |
 |---|---|
-| No new events after installing an update | Open KinSync once — the update stopped the monitoring service; opening the app restarts it (kinsync-android `cf166db`) |
+| No new events after installing an update | Open KinSync once — the update stopped the monitoring service; opening the app restarts it (kinsync-android `cf166db`). The automatic restart (`9e67926`) is blocked on Xiaomi/HyperOS while "Autostart" is off |
+| Monitoring not running after an update or reboot on a Xiaomi phone; logcat shows `process is not permitted to auto start` | **Open (deferred):** HyperOS "Autostart" is off for KinSync. Open the app to restart monitoring; the fix is Settings → Apps → Manage apps → KinSync → Autostart |
 | No new events after a while | OEM battery killer: re-check battery-optimization exemption; some OEMs (Xiaomi, Oppo, Vivo) need "Autostart" enabled too |
 | "Backend unreachable" | [health-check-failures.md](health-check-failures.md); check phone network |
 | `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Build signed with a different debug key. **Do not uninstall the demo phone's app** — use the shared debug keystore and rebuild |

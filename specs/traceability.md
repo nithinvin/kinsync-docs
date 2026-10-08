@@ -1,6 +1,6 @@
 # KinSync — Requirements Traceability Matrix
 
-**Last updated:** 2026-10-08 (Phase-2 step M1)
+**Last updated:** 2026-10-08 (Phase-2 step M2)
 
 Maps every requirement → planned phase → implementing module → evidence (tests / commits) →
 status. Update this file whenever a phase's work lands (see [../CLAUDE.md](../CLAUDE.md)).
@@ -20,9 +20,9 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 | FR-1.4 | ≤3 caregivers per elder | 3 | api: Pairing Service | — | ⏳ |
 | FR-1.5 | Elder views/revokes caregivers | 3–4 | and: Pairing UI · api | — | ⏳ |
 | FR-2.1 | Capture unlock / screen on-off | 1 | and: `collector/` | and `64e3b66`; `UnlockEventDaoTest` | ✅ |
-| FR-2.2 | UsageStatsManager + rationale | 1 → 2 | and: `permissions/`, Event Collector | and `64e3b66` (permission + rationale only) | 🟡 |
+| FR-2.2 | UsageStatsManager + rationale | 1 → 2 | and: `permissions/`, Event Collector | and `64e3b66` (permission + rationale); Phase-2 M2: foreground intervals collected every 15 min (`AppUsageIntervalBuilderTest`, `AppUsageCollectorTest`, `AppUsageTotalsTest`, `AppUsageIntervalDaoTest`), and `9e67926` | ✅ |
 | FR-2.3 | Coarse motion (Activity Recognition) | 2 | and: Event Collector | — | ⏳ |
-| FR-2.4 | Raw events stored only on device | 1 | and: `data/` (Room) | and `64e3b66` | 🟡 (unlock events only) |
+| FR-2.4 | Raw events stored only on device | 1 | and: `data/` (Room) | and `64e3b66`; M2 app-usage intervals, Room v2 migration (`MigrationTest`), and `9e67926` | 🟡 (unlocks + app usage; motion and activity pending) |
 | FR-2.5 | Transparency log screen | 2 → 4 | and: UI | Phase-1 debug list; Phase-2 timeline + summary screens | ⏳ |
 | FR-2.6 | Pause / travel mode | 4 | and: UI, collector | — | ⏳ |
 | FR-2.7 | Phone last-moved time (minimal motion check) | 2 | and: Event Collector | — | ⏳ |
@@ -51,7 +51,7 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 | ID | Phase | Evidence | Status |
 |---|---|---|---|
 | NFR-1 Privacy | all | Phase-1: only `GET /health` leaves device (`HealthApiClient`) | 🟡 |
-| NFR-2 Reliability | 1 → 3 | Foreground service + boot receiver (and `64e3b66`); scheduler pending | 🟡 |
+| NFR-2 Reliability | 1 → 3 | Foreground service + boot receiver (and `64e3b66`); WorkManager collection + restart after app update (and `9e67926`); Xiaomi "Autostart" blocks the automatic restarts (open); scheduler pending | 🟡 |
 | NFR-3 Battery | 2 → 4 | Not yet measured (first measurement planned in Phase-2) | ⏳ |
 | NFR-4 Security | 1 → | TLS via Caddy, ufw, key-only SSH, fail2ban, unattended-upgrades (VM); HTTPS-only base URL (`BackendConfigTest`); tokens pending | 🟡 |
 | NFR-5 Compatibility | 1 | `minSdk 26` ([ADR-0003](../design/decisions/0003-android-min-sdk-26.md)) | ✅ |
