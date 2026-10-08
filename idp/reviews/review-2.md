@@ -25,4 +25,7 @@ Overall the panel was satisfied with the demo.
 ## Individual contributions this review
 | Member | Work done |
 |---|---|
-| _(team to fill)_ | |
+| Nithin Vinayagamoorthy | Backend: FastAPI service, health endpoints, VM setup, Caddy/TLS, PostgreSQL (kinsync-api) |
+| Sri Hasini Chowdhary G | Android app: onboarding, permissions, unlock-event collection, debug screen (kinsync-android) |
+
+_(Team: correct or extend if the split was different.)_

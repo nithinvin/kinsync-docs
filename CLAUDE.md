@@ -55,6 +55,14 @@ After phase work lands or a review happens:
 4. `idp/reviews/review-N.md` — from `idp/reviews/_template.md`; feedback rows must link to the
    phase deliverable that addresses them.
 5. If ops changed: the matching runbook's "Last verified" line.
+6. If the feature list or priorities changed: edit
+   `idp/reviews/review-3-material/feature-map.html` (or the next review's copy) and regenerate the
+   PDF next to it:
+   ```bash
+   google-chrome --headless=new --no-sandbox --virtual-time-budget=8000 --no-pdf-header-footer \
+     --print-to-pdf=idp/reviews/review-3-material/KinSync_Feature_Map.pdf \
+     file://$PWD/idp/reviews/review-3-material/feature-map.html
+   ```
 
 Use short SHAs (7 chars). Dates ISO `YYYY-MM-DD`.
 

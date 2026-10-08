@@ -21,22 +21,24 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 
 | # | Priority | Deliverable | Repo | Reqs | Status |
 |---|---|---|---|---|---|
-| 0 | Must | **Feature map for the panel**: one slide/page listing every planned feature → phase → status (from [traceability.md](../specs/traceability.md)) | docs | — | ⏳ |
+| 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | 🟡 v1 `24037d6`, awaiting team approval |
 | 1 | Must | **App-usage collection**: query `UsageStatsManager` periodically (WorkManager); store per-app foreground intervals / daily totals in Room, on-device only | android | FR-2.2, FR-2.4 | ⏳ |
 | 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | ⏳ |
 | 3 | Must | **Coarse activity** (still / walking / in-vehicle) via Activity Recognition Transition API; request the `ACTIVITY_RECOGNITION` runtime permission with a plain-language rationale screen | android | FR-2.3 | ⏳ |
-| 3a | Should | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ⏳ |
-| 3b | Should | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
+| 3a | Nice | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ⏳ |
+| 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
 | 4 | Must | **"My day" timeline screen**: unlocks, screen on/off, app-usage blocks, motion, activity, charging and call events on one 24-h timeline, with day picker | android | FR-2.5 (precursor) | ⏳ |
 | 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ⏳ |
-| 6 | Should | Consent screen updated to name every signal now collected | android | FR-7.1 | ⏳ |
-| 7 | Should | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ⏳ |
-| 8 | Should | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ⏳ |
+| 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ⏳ |
+| 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ⏳ |
+| 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ⏳ |
 | 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | ⏳ |
-| 10 | Must | Docs: requirements (FR-2.7), data-model (new Room entities), traceability, review-2 response | docs | — | ⏳ |
+| 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | 🟡 requirements, traceability and review-2 done (`6350ab6`); data-model waits for implementation |
+| 11 | Nice | Draft of the Phase-3 API design (pairing, devices, heartbeat request/response shapes) | api, docs | — | ⏳ |
 
-Backend: no new endpoints this phase (only routine maintenance — e.g. backups per
-[runbook](../runbooks/postgres-backup-restore.md)).
+Priorities match the feature map: **Must** = needed for the Review III demo, **Nice** = if time
+allows. Backend: no new endpoints this phase; DB backups are postponed (see
+[roadmap § Ops backlog](roadmap.md#3-ops-backlog-not-tied-to-a-review)).
 
 ## 3. Out of scope (moved to Phase-3, Review IV)
 
@@ -79,6 +81,10 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 4. Ownership: backend — Nithin, Android — Sri Hasini (not a focus for Review III).
 5. DB backups on the VM: postponed (roadmap ops backlog).
 
+**Still pending team approval** (asked 2026-10-04): the overall scope and the Must / Nice split
+in §2 and the feature map; whether 30 days is the right local retention; whether to keep call
+activity given its sensitive permission.
+
 ## 8. Deviations from plan
 
 | Planned (Review II plan) | Now | Why |
@@ -87,4 +93,18 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 
 ## 9. Commit log
 
-_(fill in: SHA · date · summary, per repo)_
+### kinsync-docs
+| SHA | Date | Summary |
+|---|---|---|
+| `6350ab6` | 2026-10-04 | VM audit, Review II feedback, Phase-2 re-scope, FR-2.7 / FR-2.8 |
+| `24037d6` | 2026-10-04 | Feature map for Review III (PDF + HTML) |
+
+### kinsync-api
+| SHA | Date | Summary |
+|---|---|---|
+| `b582090` | 2026-10-04 | Remove template leftovers; peer-auth backup script (not yet deployed to the VM) |
+
+### kinsync-android
+| SHA | Date | Summary |
+|---|---|---|
+| `c7ffb47` | 2026-10-04 | ktlint / detekt deferred (no app code yet in Phase-2) |

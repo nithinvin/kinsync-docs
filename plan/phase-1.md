@@ -2,7 +2,7 @@
 
 **Review:** Review II, panel, 21–25 Sep 2026 (20 marks)
 **Status:** ✅ Done (demoed at Review II)
-**Demoed commits:** kinsync-api `8faf871` · kinsync-android `64e3b66` (both to be tagged `review-2`)
+**Demoed commits:** kinsync-api `8faf871` · kinsync-android `64e3b66` (both tagged `review-2`, pushed 2026-10-04)
 
 ## 1. Objective
 

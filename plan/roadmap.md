@@ -14,7 +14,7 @@ Status legend: ✅ done · 🟡 in progress · 📝 planning · ⏳ not started
 |---|---|---|---|---|---|---|---|
 | 0 | Review I | 17–21 Aug 2026 | Problem, objectives, scope, literature survey | ✅ | — | — | [review-1](../idp/reviews/review-1.md) |
 | 1 | Review II | 21–25 Sep 2026 | ~20%: requirements, design, component selection, initial prototype | ✅ | `8faf871` (tag `review-2`) | `64e3b66` (tag `review-2`) | [phase-1](phase-1.md) · [review-2](../idp/reviews/review-2.md) |
-| 2 | Review III | 12–16 Oct 2026 | ~30%: Review II follow-up, all on-device data collection + visualisation | 📝 | — | — | [phase-2](phase-2.md) (draft) |
+| 2 | Review III | 12–16 Oct 2026 | ~30%: Review II follow-up, all on-device data collection + visualisation | 📝 | — | — | [phase-2](phase-2.md) (draft, awaiting team approval) · [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) |
 | 3 | Review IV | 25–29 Jan 2027 | ~50%: major modules implemented and integrated | ⏳ | — | — | — |
 | 4 | Review V | 8–12 Mar 2027 | ~80%: all modules integrated, tested, complete working prototype | ⏳ | — | — | — |
 | 5 | Review VI (Open House) | 29 Mar–2 Apr 2027 | 100%: full demo, performance evaluation, innovation & impact | ⏳ | — | — | — |
@@ -42,7 +42,9 @@ of done, deviations, commit log.
 | Item | Status | Detail |
 |---|---|---|
 | Nightly PostgreSQL backups (peer auth) on the VM | ⏳ **Postponed** (decided 2026-10-04) — must be in place before Phase-3 creates real tables | [runbook](../runbooks/postgres-backup-restore.md) § A |
+| Deploy kinsync-api `main` to the VM | ⏳ VM runs `e5f0ca1`; `main` is `b582090` (docs, `deploy/` and constitution changes only — no behaviour change). Needed before the backup setup, which uses `deploy/backup.sh` | [deploy runbook](../runbooks/deploy-api.md) § B |
 | Configure ktlint + detekt in kinsync-android | ⏳ Deferred until needed | kinsync-android `CONSTITUTION.md` §II |
+| Continuous integration (GitHub Actions) | ➖ Not planned — team decision 2026-10-04; run quality gates locally before pushing | [common principles § 6](../engineering/common-principles.md#6-git-workflow) |
 
 ## 4. Requirement coverage
 

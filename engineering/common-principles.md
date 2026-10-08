@@ -58,6 +58,7 @@ HTTP interface. Change it **before** changing either implementation, in the same
 ## 6. Git workflow
 
 - `main` is always demoable. Work on short-lived branches for anything non-trivial.
+- No CI (team decision 2026-10-04): run each repo's quality gate locally before every push.
 - Commit messages: imperative subject ≤ 72 chars, body explains *why* when not obvious.
   Constitution amendments use `docs: amend constitution to vX.Y.Z (<summary>)`.
 - No AI attribution trailers (e.g. `Co-Authored-By: Claude …`) in commit messages.
