@@ -1,8 +1,10 @@
 # Phase-2 — On-device Data Collection & Visualisation (Review III)
 
 **Review:** Review III, guide, 12–16 Oct 2026 (10 marks)
-**Status:** 📝 DRAFT — re-scoped 2026-10-04 after Review II feedback; **on hold until Nithin and
-Sri Hasini approve the scope** — no design or implementation before that
+**Status:** 🟡 In progress — re-scoped 2026-10-04 after Review II feedback; scope and the
+Must / Nice split approved by Nithin and Sri Hasini on 2026-10-08. Implementation follows the
+step plan in [§10](#10-implementation-steps): Must steps first, Nice steps only after every Must
+step is tested on the demo phone.
 **Owners:** backend — Nithin · Android app — Sri Hasini
 **Demoed commits:** — (fill in at review; tag `review-3`)
 
@@ -21,7 +23,7 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 
 | # | Priority | Deliverable | Repo | Reqs | Status |
 |---|---|---|---|---|---|
-| 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | 🟡 v1 `24037d6`, awaiting team approval |
+| 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | ✅ v1 `24037d6`, approved 2026-10-08 (refresh statuses before the review) |
 | 1 | Must | **App-usage collection**: query `UsageStatsManager` periodically (WorkManager); store per-app foreground intervals / daily totals in Room, on-device only | android | FR-2.2, FR-2.4 | ⏳ |
 | 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | ⏳ |
 | 3 | Must | **Coarse activity** (still / walking / in-vehicle) via Activity Recognition Transition API; request the `ACTIVITY_RECOGNITION` runtime permission with a plain-language rationale screen | android | FR-2.3 | ⏳ |
@@ -73,7 +75,7 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 - [ ] [traceability.md](../specs/traceability.md) and [roadmap.md](roadmap.md) updated with SHAs
 - [ ] kinsync-android tagged `review-3` at the demoed commit (kinsync-api too if it changed)
 
-## 7. Decisions so far (2026-10-04, from the parent / team discussion)
+## 7. Decisions
 
 1. Movement: only "last moved" via a minimally invasive check — **no step counts**.
 2. Activity Recognition (still / walking / in-vehicle): **in Phase-2**; ask for the permission.
@@ -81,9 +83,11 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 4. Ownership: backend — Nithin, Android — Sri Hasini (not a focus for Review III).
 5. DB backups on the VM: postponed (roadmap ops backlog).
 
-**Still pending team approval** (asked 2026-10-04): the overall scope and the Must / Nice split
-in §2 and the feature map; whether 30 days is the right local retention; whether to keep call
-activity given its sensitive permission.
+6. **2026-10-08 — team approved the proposal as it stands**: the scope and the Must / Nice split
+   in §2, the feature map, 30-day local retention (deliverable 7) and keeping call activity
+   (deliverable 3b, sideloaded APK only).
+7. Order of work: Must steps first, one at a time; the user tests each on the demo phone before
+   the next starts. Nice steps begin only when all Must steps work (§10).
 
 ## 8. Deviations from plan
 
@@ -108,3 +112,45 @@ activity given its sensitive permission.
 | SHA | Date | Summary |
 |---|---|---|
 | `c7ffb47` | 2026-10-04 | ktlint / detekt deferred (no app code yet in Phase-2) |
+
+## 10. Implementation steps
+
+Each step is one reviewable change set: code + tests + doc updates. Workflow per step:
+implement → user reviews the diff → user installs the debug APK and tests on the demo phone →
+user approves → commit and push → next step. "Test on phone" is what the user checks.
+
+Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · ⏳ not started
+
+### Must-have (Review III demo)
+
+| Step | Deliverable(s) | What gets built | Test on phone | Status | Commit |
+|---|---|---|---|---|---|
+| M0 | 10 | Docs: approved scope, this step plan, trackers | — | ✅ | docs (SHA recorded in M1) |
+| M1 | 6 | Consent screen lists every Phase-2 signal; consent gets a version number so a phone that agreed to the Phase-1 text is asked again | Fresh install and upgrade from the Phase-1 APK both show the new consent text; refusing stops collection | ⏳ | — |
+| M2 | 1, 9 | App usage: `UsageStatsManager.queryEvents()` → foreground intervals in a new Room table; periodic collection with WorkManager (15 min) and on app open; Room v1 → v2 migration that keeps Phase-1 unlock events; DAO + interval-builder tests | Use 2–3 apps, open KinSync → intervals appear on the debug screen; Phase-1 unlock history still there | ⏳ | — |
+| M3 | 2, 9 | Last moved: `TYPE_SIGNIFICANT_MOTION` one-shot trigger, re-armed after each event, inside `MonitoringService`; timestamps only; "not available on this phone" when the sensor is missing; Room v3 | Leave phone still, then walk with it → a new "moved at" time appears | ⏳ | — |
+| M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ⏳ | — |
+| M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ⏳ | — |
+| M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker; becomes the app's main screen (debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ⏳ | — |
+| M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | ⏳ | — |
+
+### Nice-to-have (only after every Must step is ✅)
+
+| Step | Deliverable | What gets built | Status | Commit |
+|---|---|---|---|---|
+| N1 | 3a | Charging plugged / unplugged times (no permission); shown on timeline and summary | ⏳ | — |
+| N2 | 3b | Call activity: count and times only, no numbers or contacts; `READ_CALL_LOG` permission screen; consent text updated | ⏳ | — |
+| N3 | 7 | Purge raw events older than 30 days (daily WorkManager job) | ⏳ | — |
+| N4 | 8 | Battery: 24-h drain with vs. without collection on the demo phone, recorded as NFR-3 evidence | ⏳ | — |
+| N5 | 11 | Phase-3 API draft (pairing, devices, heartbeat shapes) in `design/api-contract.md` | ⏳ | — |
+
+### Notes for the steps
+
+- **Timing:** Review III is 12–16 Oct 2026. M1–M6 need to be on the demo phone as early as
+  possible so it has ≥ 2 days of data (DoD §6). If time runs short, M7 can shrink to the docs
+  and the tag; Nice steps move to Phase-3.
+- **Room migrations:** each step adds its table through a real migration (no destructive
+  fallback), so the demo phone keeps its history. Schema export is switched on in M2 so the
+  migrations can be tested.
+- **New dependencies:** WorkManager (M2) and Google Play services location (M4, the demo phone
+  must have Play services). Both are recorded in [tech-stack](../design/tech-stack.md) when added.

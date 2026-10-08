@@ -9,7 +9,8 @@ installed on the VM (not needed: Hetzner IP is static).
 | Provider | noip.com (free tier) — [ADR-0005](../design/decisions/0005-noip-dynamic-dns.md) |
 | Account owner | Nithin's noip.com account (login email kept privately, not in this public repo) |
 | Confirmation | Done by the team every 30 days (reminder email from noip) |
-| Last hostname confirmation | _(YYYY-MM-DD — fill in after each confirmation)_ |
+| Last hostname confirmation | 2026-10-08 |
+| Next confirmation due | by 2026-11-07 (30 days later; noip emails a reminder) |
 
 ## Purpose / When to use
 - **Every month:** free noip hostnames **expire unless confirmed every 30 days**. noip emails a

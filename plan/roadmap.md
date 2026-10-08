@@ -1,6 +1,6 @@
 # KinSync — Roadmap & Status
 
-**Last updated:** 2026-10-04
+**Last updated:** 2026-10-08
 **Source of review dates:** [../idp/guidelines.md](../idp/guidelines.md)
 
 This is the **single status board** for the project. Update it whenever a phase changes state or
@@ -14,7 +14,7 @@ Status legend: ✅ done · 🟡 in progress · 📝 planning · ⏳ not started
 |---|---|---|---|---|---|---|---|
 | 0 | Review I | 17–21 Aug 2026 | Problem, objectives, scope, literature survey | ✅ | — | — | [review-1](../idp/reviews/review-1.md) |
 | 1 | Review II | 21–25 Sep 2026 | ~20%: requirements, design, component selection, initial prototype | ✅ | `8faf871` (tag `review-2`) | `64e3b66` (tag `review-2`) | [phase-1](phase-1.md) · [review-2](../idp/reviews/review-2.md) |
-| 2 | Review III | 12–16 Oct 2026 | ~30%: Review II follow-up, all on-device data collection + visualisation | 📝 | — | — | [phase-2](phase-2.md) (draft, awaiting team approval) · [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) |
+| 2 | Review III | 12–16 Oct 2026 | ~30%: Review II follow-up, all on-device data collection + visualisation | 🟡 | — | — | [phase-2](phase-2.md) (approved 2026-10-08; step tracker in §10) · [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) |
 | 3 | Review IV | 25–29 Jan 2027 | ~50%: major modules implemented and integrated | ⏳ | — | — | — |
 | 4 | Review V | 8–12 Mar 2027 | ~80%: all modules integrated, tested, complete working prototype | ⏳ | — | — | — |
 | 5 | Review VI (Open House) | 29 Mar–2 Apr 2027 | 100%: full demo, performance evaluation, innovation & impact | ⏳ | — | — | — |

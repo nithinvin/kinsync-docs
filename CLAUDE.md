@@ -13,7 +13,9 @@ living alone; VIT Chennai BACSE291 Innovative Design Project, AY 2026–27). No 
 
 ## Hard rules
 
-- **Never commit or push without the user's explicit go-ahead.** Make changes, summarise, wait.
+- **Review before commit:** always make the changes in the working tree, summarise them and stop.
+  The user reviews (and, for app changes, tests on the phone). Only after the user explicitly
+  approves, commit and push. Never commit or push without that go-ahead.
 - **No `Co-Authored-By` / AI attribution trailer** in commit messages.
 - **All repos are public.** Never write the VM IP, SSH usernames, passwords, `.env` contents,
   tokens or other secrets into any file. Use `<vm-ip>`, `<admin-user>` placeholders.
