@@ -117,6 +117,8 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 | `c7ffb47` | 2026-10-04 | ktlint / detekt deferred (no app code yet in Phase-2) |
 | `3f7831b` | 2026-10-08 | M0: CLAUDE.md review-before-commit rule |
 | `137a3fd` | 2026-10-08 | M1: versioned consent listing every Phase-2 signal |
+| `cf166db` | 2026-10-08 | Fixes found while testing M1 on the phone: screens clear of system bars (Android 15 edge-to-edge); monitoring restarts when the app is opened after an update |
+| `4d8b049` | 2026-10-08 | Docs: safe phone updates, emulator-only instrumented tests |
 
 ## 10. Implementation steps
 
@@ -157,8 +159,12 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 - **Room migrations:** each step adds its table through a real migration (no destructive
   fallback), so the demo phone keeps its history. Schema export is switched on in M2 so the
   migrations can be tested.
-- **Restart after app update:** installing a new APK stops `MonitoringService` until the app is
-  opened (seen during M1). M2 adds an `ACTION_MY_PACKAGE_REPLACED` receiver that restarts it when
-  onboarding is complete.
+- **Restart after app update:** installing a new APK stops `MonitoringService`. Since `cf166db`
+  opening the app restarts it; M2 adds an `ACTION_MY_PACKAGE_REPLACED` receiver so it restarts
+  even if nobody opens the app.
+- **Testing setup (2026-10-08):** the demo phone is updated in place with `adb install -r`
+  using the team's shared debug keystore, after a `run-as` copy of its database. Instrumented
+  tests run only on an emulator (Gradle's `connectedAndroidTest` uninstalls the app from every
+  connected device). Procedure: [android-demo-device runbook](../runbooks/android-demo-device.md).
 - **New dependencies:** WorkManager (M2) and Google Play services location (M4, the demo phone
   must have Play services). Both are recorded in [tech-stack](../design/tech-stack.md) when added.
