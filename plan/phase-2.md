@@ -31,7 +31,7 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 | 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
 | 4 | Must | **"My day" timeline screen**: unlocks, screen on/off, app-usage blocks, motion, activity, charging and call events on one 24-h timeline, with day picker | android | FR-2.5 (precursor) | ⏳ |
 | 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ⏳ |
-| 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ⏳ |
+| 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ✅ M1 and `137a3fd` (tested on the demo phone 2026-10-08) |
 | 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ⏳ |
 | 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ⏳ |
 | 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | ⏳ |
@@ -102,16 +102,21 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 |---|---|---|
 | `6350ab6` | 2026-10-04 | VM audit, Review II feedback, Phase-2 re-scope, FR-2.7 / FR-2.8 |
 | `24037d6` | 2026-10-04 | Feature map for Review III (PDF + HTML) |
+| `d5f82da` | 2026-10-04 | Trackers synced with Phase-2 decisions and feature map |
+| `e89acaa` | 2026-10-08 | M0: team answers recorded, Phase-2 approved, step tracker |
 
 ### kinsync-api
 | SHA | Date | Summary |
 |---|---|---|
 | `b582090` | 2026-10-04 | Remove template leftovers; peer-auth backup script (not yet deployed to the VM) |
+| `fa10064` | 2026-10-08 | M0: CLAUDE.md review-before-commit rule |
 
 ### kinsync-android
 | SHA | Date | Summary |
 |---|---|---|
 | `c7ffb47` | 2026-10-04 | ktlint / detekt deferred (no app code yet in Phase-2) |
+| `3f7831b` | 2026-10-08 | M0: CLAUDE.md review-before-commit rule |
+| `137a3fd` | 2026-10-08 | M1: versioned consent listing every Phase-2 signal |
 
 ## 10. Implementation steps
 
@@ -125,8 +130,8 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 
 | Step | Deliverable(s) | What gets built | Test on phone | Status | Commit |
 |---|---|---|---|---|---|
-| M0 | 10 | Docs: approved scope, this step plan, trackers | — | ✅ | docs (SHA recorded in M1) |
-| M1 | 6 | Consent screen lists every Phase-2 signal; consent gets a version number so a phone that agreed to the Phase-1 text is asked again | Fresh install and upgrade from the Phase-1 APK both show the new consent text; refusing stops collection | ⏳ | — |
+| M0 | 10 | Docs: approved scope, this step plan, trackers | — | ✅ | docs `e89acaa` |
+| M1 | 6 | Consent screen lists every Phase-2 signal; consent gets a version number so a phone that agreed to the Phase-1 text is asked again | Fresh install and upgrade from the Phase-1 APK both show the new consent text; refusing stops collection | ✅ | and `137a3fd` |
 | M2 | 1, 9 | App usage: `UsageStatsManager.queryEvents()` → foreground intervals in a new Room table; periodic collection with WorkManager (15 min) and on app open; Room v1 → v2 migration that keeps Phase-1 unlock events; DAO + interval-builder tests | Use 2–3 apps, open KinSync → intervals appear on the debug screen; Phase-1 unlock history still there | ⏳ | — |
 | M3 | 2, 9 | Last moved: `TYPE_SIGNIFICANT_MOTION` one-shot trigger, re-armed after each event, inside `MonitoringService`; timestamps only; "not available on this phone" when the sensor is missing; Room v3 | Leave phone still, then walk with it → a new "moved at" time appears | ⏳ | — |
 | M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ⏳ | — |
@@ -152,5 +157,8 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 - **Room migrations:** each step adds its table through a real migration (no destructive
   fallback), so the demo phone keeps its history. Schema export is switched on in M2 so the
   migrations can be tested.
+- **Restart after app update:** installing a new APK stops `MonitoringService` until the app is
+  opened (seen during M1). M2 adds an `ACTION_MY_PACKAGE_REPLACED` receiver that restarts it when
+  onboarding is complete.
 - **New dependencies:** WorkManager (M2) and Google Play services location (M4, the demo phone
   must have Play services). Both are recorded in [tech-stack](../design/tech-stack.md) when added.

@@ -1,6 +1,6 @@
 # KinSync — Requirements Traceability Matrix
 
-**Last updated:** 2026-10-04 (after Review 2 / Phase-1; phases re-planned after Review II)
+**Last updated:** 2026-10-08 (Phase-2 step M1)
 
 Maps every requirement → planned phase → implementing module → evidence (tests / commits) →
 status. Update this file whenever a phase's work lands (see [../CLAUDE.md](../CLAUDE.md)).
@@ -42,7 +42,7 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 | FR-6.1 | Caregiver status view | 4 | and: Caregiver Dashboard | — | ⏳ |
 | FR-6.2 | Aggregated trend | 4 | and: Caregiver Dashboard | — | ⏳ |
 | FR-6.3 | Acknowledge / resolve | 3–4 | and · api: `/alerts/{id}/acknowledge` | — | ⏳ |
-| FR-7.1 | Explicit onboarding consent | 1 → 4 | and: `consent/`, onboarding UI | and `64e3b66`; `SharedPreferencesConsentManagerTest` | 🟡 (early version) |
+| FR-7.1 | Explicit onboarding consent | 1 → 4 | and: `consent/`, onboarding UI | and `64e3b66`; Phase-2 M1: versioned consent listing every signal, re-asked after upgrade (`ConsentStateTest`, `KinSyncDestinationsTest`, `SharedPreferencesConsentManagerTest`, `ConsentScreenTest`), and `137a3fd` | 🟡 (Phase-2 signals covered) |
 | FR-7.2 | Only derived signals leave device | 3 | and: Heartbeat Sync Client · api schema | Design: no raw-activity table ([data-model](../design/data-model.md)) | ⏳ |
 | FR-7.3 | Revoke consent stops & unpairs | 1 → 3 | and: `consent/` · api | and `64e3b66` ("Stop monitoring" stops collection; unpair pending) | 🟡 |
 

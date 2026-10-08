@@ -12,6 +12,7 @@
 | No raw-activity table exists on the backend | [data-model.md](data-model.md) | By design |
 | FCM used only as a wake-up relay; minimal push payload (elder name, alert type, time) | Notification Service | ⏳ Phase-3 |
 | Collection never starts without consent (also after reboot) | `BootCompletedReceiver` checks onboarding | ✅ Phase-1 |
+| Consent re-asked when the list of collected signals changes; new signals start only after it | Versioned consent (`CURRENT_CONSENT_VERSION`), `ConsentState.isConsentCurrent` | 🟡 Phase-2 M1 |
 | Monitoring notification always visible (never hidden) | `MonitoringService` | ✅ Phase-1 |
 
 ## 2. Android client threat notes
