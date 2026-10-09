@@ -6,7 +6,7 @@ Must / Nice split approved by Nithin and Sri Hasini on 2026-10-08. Implementatio
 step plan in [§10](#10-implementation-steps): Must steps first, Nice steps only after every Must
 step is tested on the demo phone.
 **Owners:** backend — Nithin · Android app — Sri Hasini
-**Demoed commits:** — (fill in at review; tag `review-3`)
+**Demoed commits:** kinsync-android `84af3ea` (tag `review-3`); kinsync-api unchanged
 
 ## 1. Objective
 
@@ -74,7 +74,7 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 - [ ] Review II observations each have a recorded response in [review-2.md](../idp/reviews/review-2.md)
 - [x] [traceability.md](../specs/traceability.md) and [roadmap.md](roadmap.md) updated with SHAs
   (roadmap gets the tagged SHAs with the tag)
-- [ ] kinsync-android tagged `review-3` at the demoed commit (kinsync-api too if it changed)
+- [x] kinsync-android tagged `review-3` at the demoed commit (kinsync-api too if it changed)
 
 ## 7. Decisions
 
@@ -147,7 +147,7 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 | M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ✅ passed on the demo phone 2026-10-09 | `0d6ccac` |
 | M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ✅ passed on the demo phone 2026-10-09 | `30b3f34` |
 | M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker, opened from the summary (the summary stayed the main screen, decided at M5; debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ✅ passed on the demo phone 2026-10-09 | `a998296` |
-| M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | 🟡 docs, feature map, [demo script](../idp/reviews/review-3-material/demo-script.md) and version done; run-through passed on the demo phone 2026-10-09; tag `review-3` pending | `84af3ea` |
+| M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | ✅ docs, feature map, [demo script](../idp/reviews/review-3-material/demo-script.md) and version done; run-through passed on the demo phone 2026-10-09; tagged `review-3` | `84af3ea` |
 
 ### Nice-to-have (only after every Must step is ✅)
 
