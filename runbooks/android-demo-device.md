@@ -1,7 +1,8 @@
 # Runbook: Prepare an Android phone for a review demo
 
-**Last verified:** 2026-10-08 — Phase-2 M1 build installed over the Phase-1 app on the demo
-phone without losing data (unlock history kept from 2026-09-14).
+**Last verified:** 2026-10-09 — Phase-2 M5 build (kinsync-android `30b3f34`) installed in place
+on the demo phone; every database upgrade so far (v1 → v4) kept all data (unlock history kept
+from 2026-09-14).
 
 **Demo phone:** Redmi Note 13 5G, Android 15 (API 35, HyperOS), Google Play services present,
 significant-motion sensor present. It has been collecting since 2026-09-14 — **its data is the
@@ -40,15 +41,21 @@ The day before any review / Open House.
 4. **Onboard** (only on a fresh install or after "Stop monitoring"):
    1. Consent screen → "I agree, continue".
    2. Usage access → "Open settings" → permit KinSync → back (Continue enables itself).
-   3. Battery optimization → "Allow background activity" → confirm; allow notifications (13+).
-5. **Check the debug screen:** "Backend reachable" banner; lock/unlock → new rows within seconds;
-   persistent "KinSync is watching over you" notification.
+   3. "Notice walking and resting" → "Allow" → allow "Physical activity".
+   4. Battery optimization → "Allow background activity" → confirm; allow notifications (13+).
+5. **Check the screens:**
+   - "Your day so far" (main screen): first unlock, unlocks, screen time and top apps look
+     right for the day; "Last moved" and still / walking / in a vehicle are filled in (no
+     "Allow physical activity" button — if there is one, tap it and allow).
+   - "See everything KinSync recorded" (debug screen): "Backend reachable" banner;
+     lock/unlock → new rows within seconds.
+   - Persistent "KinSync is watching over you" notification.
 6. **Let it collect** — leave the phone running ≥24 h before the review so there's real data.
 7. **Backup plan:** keep the debug APK on a second phone / Drive link, and screenshots/screen
    recording of the flow in case the venue Wi-Fi blocks the backend.
 
 ## Verify
-All four checks in step 5 pass on the actual demo phone, on the venue network if possible
+All checks in step 5 pass on the actual demo phone, on the venue network if possible
 (mobile data hotspot as fallback).
 
 ## Rollback
@@ -62,6 +69,8 @@ resort only, and only after the backup in step 2.
 | No new events after installing an update | Open KinSync once — the update stopped the monitoring service; opening the app restarts it (kinsync-android `cf166db`). The automatic restart (`9e67926`) is blocked on Xiaomi/HyperOS while "Autostart" is off |
 | Monitoring not running after an update or reboot on a Xiaomi phone; logcat shows `process is not permitted to auto start` | **Open (deferred):** HyperOS "Autostart" is off for KinSync. Open the app to restart monitoring; the fix is Settings → Apps → Manage apps → KinSync → Autostart |
 | No new events after a while | OEM battery killer: re-check battery-optimization exemption; some OEMs (Xiaomi, Oppo, Vivo) need "Autostart" enabled too |
+| "Physical activity is not allowed" on the summary or debug screen | Tap "Allow physical activity" → "Allow". If Android no longer shows the dialog, use "Open settings" → Permissions → Physical activity → Allow |
+| "Last moved" never updates although the phone was moved | Seen once on the demo phone (2026-10-08, after the M3 install); it started working after a reboot. Restart the phone, then open KinSync. Later in-place installs (M4, M5) did not need a reboot |
 | "Backend unreachable" | [health-check-failures.md](health-check-failures.md); check phone network |
 | `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | Build signed with a different debug key. **Do not uninstall the demo phone's app** — use the shared debug keystore and rebuild |
 | `adb devices` doesn't list the phone | Check `lsusb`: if the phone (and any USB hub it's on) is missing, it's a cable/hub problem — replug, or plug the phone straight into the computer; unlock it and allow USB debugging |
