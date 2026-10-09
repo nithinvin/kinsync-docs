@@ -25,7 +25,7 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 |---|---|---|---|---|---|
 | 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | ✅ v1 `24037d6`, approved 2026-10-08 (refresh statuses before the review) |
 | 1 | Must | **App-usage collection**: query `UsageStatsManager` periodically (WorkManager); store per-app foreground intervals / daily totals in Room, on-device only | android | FR-2.2, FR-2.4 | ✅ M2 and `9e67926` (tested on the demo phone 2026-10-08) |
-| 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | 🟡 M3 and `a52fddd` — on the demo phone, walk test pending |
+| 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | ✅ M3 and `a52fddd` — working on the demo phone (2026-10-09) |
 | 3 | Must | **Coarse activity** (still / walking / in-vehicle) via Activity Recognition Transition API; request the `ACTIVITY_RECOGNITION` runtime permission with a plain-language rationale screen | android | FR-2.3 | ⏳ |
 | 3a | Nice | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ⏳ |
 | 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
@@ -137,7 +137,7 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 | M0 | 10 | Docs: approved scope, this step plan, trackers | — | ✅ | docs `e89acaa` |
 | M1 | 6 | Consent screen lists every Phase-2 signal; consent gets a version number so a phone that agreed to the Phase-1 text is asked again | Fresh install and upgrade from the Phase-1 APK both show the new consent text; refusing stops collection | ✅ | and `137a3fd` |
 | M2 | 1, 9 | App usage: `UsageStatsManager.queryEvents()` → foreground intervals in a new Room table; periodic collection with WorkManager (15 min) and on app open; Room v1 → v2 migration that keeps Phase-1 unlock events; DAO + interval-builder tests | Use 2–3 apps, open KinSync → intervals appear on the debug screen; Phase-1 unlock history still there | ✅ | and `9e67926` |
-| M3 | 2, 9 | Last moved: `TYPE_SIGNIFICANT_MOTION` one-shot trigger, re-armed after each event, inside `MonitoringService`; timestamps only; "not available on this phone" when the sensor is missing; Room v3 | Leave phone still, then walk with it → a new "moved at" time appears | 🟡 installed, walk test pending | and `a52fddd` |
+| M3 | 2, 9 | Last moved: `TYPE_SIGNIFICANT_MOTION` one-shot trigger, re-armed after each event, inside `MonitoringService`; timestamps only; "not available on this phone" when the sensor is missing; Room v3 | Leave phone still, then walk with it → a new "moved at" time appears | ✅ passed on the demo phone 2026-10-09 | and `a52fddd` |
 | M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ⏳ | — |
 | M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ⏳ | — |
 | M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker; becomes the app's main screen (debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ⏳ | — |
@@ -176,10 +176,14 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
   as an app; M5 should leave it out of the daily summary.
 - **M3 on the demo phone (2026-10-08):** installed in place; the migration to v3 kept all data
   (4,053 unlock events, app-usage intervals still growing) and `dumpsys sensorservice` shows
-  the significant-motion trigger armed. No movement was recorded on the first evening; the team
-  repeats the walk test on 2026-10-09. If it still shows nothing, pull logcat to see whether
-  the sensor fires on HyperOS. The emulator has no significant-motion sensor, so it only
-  covers the "not available" path.
+  the significant-motion trigger armed. No movement was recorded on the first evening or on the
+  morning of 2026-10-09. After the phone was rebooted (for an unrelated reason) and KinSync was
+  opened, "Last moved" updated every time the phone moved: 15 movement times in the first three
+  hours, the first one six minutes after the reboot. The cause is not known yet; the sensor may
+  stop delivering triggers to an app that was updated in place until the phone restarts. Check
+  this on the next install (M4): if "Last moved" stops updating after the update, reboot the
+  phone after each install and add the step to the runbook. The emulator has no
+  significant-motion sensor, so it only covers the "not available" path.
 - **Testing setup (2026-10-08):** the demo phone is updated in place with `adb install -r`
   using the team's shared debug keystore, after a `run-as` copy of its database. Instrumented
   tests run only on an emulator (Gradle's `connectedAndroidTest` uninstalls the app from every

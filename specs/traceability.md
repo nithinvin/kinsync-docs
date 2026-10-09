@@ -1,6 +1,6 @@
 # KinSync — Requirements Traceability Matrix
 
-**Last updated:** 2026-10-08 (Phase-2 step M3)
+**Last updated:** 2026-10-09 (Phase-2 step M3, phone test passed)
 
 Maps every requirement → planned phase → implementing module → evidence (tests / commits) →
 status. Update this file whenever a phase's work lands (see [../CLAUDE.md](../CLAUDE.md)).
@@ -25,7 +25,7 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 | FR-2.4 | Raw events stored only on device | 1 | and: `data/` (Room) | and `64e3b66`; M2 app-usage intervals, Room v2 migration (`MigrationTest`), and `9e67926`; M3 movement times, Room v3, and `a52fddd` | 🟡 (unlocks, app usage, movement; activity pending) |
 | FR-2.5 | Transparency log screen | 2 → 4 | and: UI | Phase-1 debug list; Phase-2 timeline + summary screens | ⏳ |
 | FR-2.6 | Pause / travel mode | 4 | and: UI, collector | — | ⏳ |
-| FR-2.7 | Phone last-moved time (minimal motion check) | 2 | and: `movement/` (significant-motion trigger), `MonitoringService` | M3: `LastMovedStatusTest`, `MovementEventDaoTest`, `MigrationTest` (2 → 3, 1 → 3); and `a52fddd`; phone walk test pending | 🟡 |
+| FR-2.7 | Phone last-moved time (minimal motion check) | 2 | and: `movement/` (significant-motion trigger), `MonitoringService` | M3: `LastMovedStatusTest`, `MovementEventDaoTest`, `MigrationTest` (2 → 3, 1 → 3); and `a52fddd`; demo-phone walk test passed 2026-10-09 | ✅ |
 | FR-2.8 | Charging + call-activity signals | 2 | and: Event Collector | — | ⏳ |
 | FR-3.1 | Rolling 14-day baseline | 3 | and: Baseline Engine | — | ⏳ |
 | FR-3.2 | Descriptive stats, ready after 7 days | 3 | and: Baseline Engine | — | ⏳ |
