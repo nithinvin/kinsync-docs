@@ -50,7 +50,7 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 
 | ID | Phase | Evidence | Status |
 |---|---|---|---|
-| NFR-1 Privacy | all | Phase-1: only `GET /health` leaves device (`HealthApiClient`) | 🟡 |
+| NFR-1 Privacy | all | Phase-1: only `GET /health` leaves device (`HealthApiClient`); Phase-2: every new signal (app use, movement, activity) stays in the on-device Room database, nothing new is sent | 🟡 |
 | NFR-2 Reliability | 1 → 3 | Foreground service + boot receiver (and `64e3b66`); WorkManager collection + restart after app update (and `9e67926`); Xiaomi "Autostart" blocks the automatic restarts (open); scheduler pending | 🟡 |
 | NFR-3 Battery | 2 → 4 | Not yet measured (first measurement planned in Phase-2) | ⏳ |
 | NFR-4 Security | 1 → | TLS via Caddy, ufw, key-only SSH, fail2ban, unattended-upgrades (VM); HTTPS-only base URL (`BackendConfigTest`); tokens pending | 🟡 |

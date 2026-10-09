@@ -10,7 +10,7 @@ AY 2026–27).
 
 | | |
 |---|---|
-| **Status** | Phase-1 done (Review II) · Phase-2 (on-device data collection + visualisation) approved by the team, implementation in progress for Review III (12–16 Oct 2026) — see [plan/roadmap.md](plan/roadmap.md) and the [feature map](idp/reviews/review-3-material/KinSync_Feature_Map.pdf) |
+| **Status** | Phase-1 done (Review II) · Phase-2 (on-device data collection + visualisation) built and tagged `review-3`, to be shown at Review III (12–16 Oct 2026); its nice-to-haves moved to Phase-3 — see [plan/roadmap.md](plan/roadmap.md) and the [feature map](idp/reviews/review-3-material/KinSync_Feature_Map.pdf) |
 | **Backend** | [nithinvin/kinsync-api](https://github.com/nithinvin/kinsync-api) — live at `https://kinsync.ddns.net` (`/health`, `/health/db`) |
 | **Android app** | [nithinvin/kinsync-android](https://github.com/nithinvin/kinsync-android) |
 | **Team** | Nithin Vinayagamoorthy (backend) · Sri Hasini Chowdhary G (Android app) · **Guide:** Kanchana Devi V |

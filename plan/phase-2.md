@@ -34,8 +34,8 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 | 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ✅ M1 and `137a3fd` (tested on the demo phone 2026-10-08) |
 | 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ➡️ moved to Phase-3 (2026-10-09) |
 | 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ➡️ moved to Phase-3 (2026-10-09) |
-| 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | 🟡 M1–M6 done (115 JVM, 59 instrumented) |
-| 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | 🟡 requirements, traceability and review-2 done (`6350ab6`); data-model updated per step (M2 `e53112c`, M3, M4; M5 and M6 add no table) |
+| 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | ✅ M1–M6 (115 JVM, 59 instrumented, all passing at `84af3ea`) |
+| 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | ✅ requirements, traceability and review-2 (`6350ab6`); data-model updated per step (M2 `e53112c`, M3, M4; M5 and M6 add no table); Review III material (`e11e2c0`) |
 | 11 | Nice | Draft of the Phase-3 API design (pairing, devices, heartbeat request/response shapes) | api, docs | — | ➡️ moved to Phase-3 (2026-10-09) |
 
 Priorities match the feature map: **Must** = needed for the Review III demo, **Nice** = if time
@@ -71,6 +71,8 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 ## 6. Definition of Done
 
 - [ ] All Must deliverables done, running on the demo phone for ≥ 2 days before the review
+  (all done 2026-10-09; the review build `84af3ea` has been on the phone since 2026-10-09, so
+  this is met from 2026-10-11)
 - [ ] Review II observations each have a recorded response in [review-2.md](../idp/reviews/review-2.md)
 - [x] [traceability.md](../specs/traceability.md) and [roadmap.md](roadmap.md) updated with SHAs
   (roadmap gets the tagged SHAs with the tag)
@@ -105,6 +107,18 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 | `24037d6` | 2026-10-04 | Feature map for Review III (PDF + HTML) |
 | `d5f82da` | 2026-10-04 | Trackers synced with Phase-2 decisions and feature map |
 | `e89acaa` | 2026-10-08 | M0: team answers recorded, Phase-2 approved, step tracker |
+| `b1a31f4` | 2026-10-08 | M1 recorded (versioned consent) |
+| `aae9c77` | 2026-10-08 | M1 phone fixes and the safe device-update procedure |
+| `e53112c` | 2026-10-08 | M2 recorded (app usage); Xiaomi "Autostart" issue opened |
+| `948b5a5` | 2026-10-08 | M3 recorded (last moved), walk test pending |
+| `8ea0f16` | 2026-10-09 | M3 done after the demo-phone walk test |
+| `00077fd` | 2026-10-09 | M4 recorded (still / walking / in vehicle) |
+| `5d3e64a` | 2026-10-09 | M5 recorded (daily summary) |
+| `2d8c31c` | 2026-10-09 | Demo-phone runbook updated for M5 |
+| `2182352` | 2026-10-09 | M6 recorded ("My day" timeline) |
+| `e11e2c0` | 2026-10-09 | M7: feature map refreshed + PDF, demo script, review-3 record |
+| `2878c91` | 2026-10-09 | M7: `review-3` tag recorded |
+| `3d2b071` | 2026-10-09 | Nice steps N1–N5 moved to Phase-3 (team decision); feature map + PDF |
 
 ### kinsync-api
 | SHA | Date | Summary |
@@ -125,8 +139,10 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 | `0d6ccac` | 2026-10-09 | M4: still / walking / in vehicle from the Activity Recognition Transition API, `ACTIVITY_RECOGNITION` permission screen, Room v4 via migration, activity section on the debug screen |
 | `1b83e04` | 2026-10-09 | Store a repeated activity transition only once (round the converted time to whole seconds) |
 | `30b3f34` | 2026-10-09 | M5: "Your day so far" summary as the main screen: first unlock, unlocks, screen time, top apps, last moved, time per activity |
+| `0b6bb44` | 2026-10-09 | Docs: README Phase-2 status, install guide for M1–M5 |
 | `a998296` | 2026-10-09 | M6: "My day" timeline: 24-hour band and time-ordered list of phone sessions (with apps), activity periods and movements; day picker |
-| `84af3ea` | 2026-10-09 | M7: version `0.2.0-phase2` for Review III |
+| `84af3ea` | 2026-10-09 | M7: version `0.2.0-phase2` for Review III (tag `review-3`) |
+| `e10a4de` | 2026-10-09 | Docs: README marks Phase-2 done |
 
 ## 10. Implementation steps
 

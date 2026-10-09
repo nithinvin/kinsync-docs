@@ -1,6 +1,6 @@
 # Runbook: Prepare an Android phone for a review demo
 
-**Last verified:** 2026-10-09 — Phase-2 M6 build (kinsync-android `a998296`) installed in place
+**Last verified:** 2026-10-09 — Review III build `0.2.0-phase2` (kinsync-android `84af3ea`, tag `review-3`) installed in place and the demo run-through passed
 on the demo phone; every database upgrade so far (v1 → v4) kept all data (unlock history kept
 from 2026-09-14).
 
