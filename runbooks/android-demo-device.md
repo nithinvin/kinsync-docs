@@ -1,6 +1,6 @@
 # Runbook: Prepare an Android phone for a review demo
 
-**Last verified:** 2026-10-09 — Phase-2 M5 build (kinsync-android `30b3f34`) installed in place
+**Last verified:** 2026-10-09 — Phase-2 M6 build (kinsync-android `a998296`) installed in place
 on the demo phone; every database upgrade so far (v1 → v4) kept all data (unlock history kept
 from 2026-09-14).
 
@@ -47,6 +47,8 @@ The day before any review / Open House.
    - "Your day so far" (main screen): first unlock, unlocks, screen time and top apps look
      right for the day; "Last moved" and still / walking / in a vehicle are filled in (no
      "Allow physical activity" button — if there is one, tap it and allow).
+   - "My day, hour by hour" (timeline): the band and the list show the day's unlocks, apps,
+     activity and movements; "Day before" shows yesterday.
    - "See everything KinSync recorded" (debug screen): "Backend reachable" banner;
      lock/unlock → new rows within seconds.
    - Persistent "KinSync is watching over you" notification.
