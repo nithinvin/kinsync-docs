@@ -41,6 +41,7 @@ From `requirements.txt` / `requirements-dev.txt`:
 | UI | Jetpack Compose (Material 3), Navigation-Compose |
 | Storage | Room 2.6.1, schema export on, real migrations (since Phase-2 M2) |
 | Background jobs | WorkManager 2.9.1 (`work-runtime-ktx`): app-usage collection every 15 min (since Phase-2 M2) |
+| Activity recognition | Google Play services location 21.3.0 (`play-services-location`): Activity Recognition Transition API for still / walking / in vehicle (since Phase-2 M4); needs Play services on the phone; no location permission is requested |
 | Network | OkHttp, coroutines |
 | DI | None yet — manual `AppContainer` ([ADR-0004](decisions/0004-android-no-di-framework.md)) |
 | SDK levels | `minSdk` 26 ([ADR-0003](decisions/0003-android-min-sdk-26.md)), `compileSdk`/`targetSdk` 35 |

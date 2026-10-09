@@ -64,17 +64,16 @@ schema-level enforcement of the privacy principle (NFR-1, FR-7.2).
 
 ## 2. Android (Room, on-device only)
 
-| Entity | Fields | Since |
-|---|---|---|
 | Entity (table) | Fields | Since | DB version |
 |---|---|---|---|
 | `UnlockEvent` (`unlock_events`) | `eventType` (`UnlockEventType`), `timestampEpochMillis` | Phase-1 | 1 |
 | `AppUsageInterval` (`app_usage_intervals`) | `packageName`, `startEpochMillis`, `endEpochMillis`; unique on (`packageName`, `startEpochMillis`) | Phase-2 M2 | 2 |
 | `MovementEvent` (`movement_events`) | `timestampEpochMillis` (significant-motion trigger; time only) | Phase-2 M3 | 3 |
+| `ActivityTransitionRecord` (`activity_transitions`) | `activity` (`STILL` / `WALKING` / `IN_VEHICLE`), `kind` (`ENTER` / `EXIT`), `timestampEpochMillis`; unique on (`activity`, `kind`, `timestampEpochMillis`) | Phase-2 M4 | 4 |
 
 Each version step is a real migration that keeps earlier data (kinsync-android
 `data/Migrations.kt`); exported schemas live in kinsync-android `app/schemas/`.
 
-Phase-2 (still planned): activity transitions, charging and
+Phase-2 (still planned, Nice): charging and
 call events (times/counts only) — all on-device only; app names never leave the phone (NFR-1).
 Exact entities are recorded here when implemented.
