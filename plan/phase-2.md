@@ -23,7 +23,7 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 
 | # | Priority | Deliverable | Repo | Reqs | Status |
 |---|---|---|---|---|---|
-| 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | ✅ v1 `24037d6`, approved 2026-10-08 (refresh statuses before the review) |
+| 0 | Must | **Feature map for the panel**: every planned feature → phase → status, with must-have / nice-to-have — [feature map](../idp/reviews/review-3-material/KinSync_Feature_Map.pdf) ([HTML source](../idp/reviews/review-3-material/feature-map.html)) | docs | — | ✅ v1 `24037d6`, approved 2026-10-08; statuses refreshed 2026-10-09 (M7) |
 | 1 | Must | **App-usage collection**: query `UsageStatsManager` periodically (WorkManager); store per-app foreground intervals / daily totals in Room, on-device only | android | FR-2.2, FR-2.4 | ✅ M2 and `9e67926` (tested on the demo phone 2026-10-08) |
 | 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | ✅ M3 and `a52fddd` — working on the demo phone (2026-10-09) |
 | 3 | Must | **Coarse activity** (still / walking / in-vehicle) via Activity Recognition Transition API; request the `ACTIVITY_RECOGNITION` runtime permission with a plain-language rationale screen | android | FR-2.3 | ✅ M4 `0d6ccac` — working on the demo phone (2026-10-09) |
@@ -72,7 +72,8 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 
 - [ ] All Must deliverables done, running on the demo phone for ≥ 2 days before the review
 - [ ] Review II observations each have a recorded response in [review-2.md](../idp/reviews/review-2.md)
-- [ ] [traceability.md](../specs/traceability.md) and [roadmap.md](roadmap.md) updated with SHAs
+- [x] [traceability.md](../specs/traceability.md) and [roadmap.md](roadmap.md) updated with SHAs
+  (roadmap gets the tagged SHAs with the tag)
 - [ ] kinsync-android tagged `review-3` at the demoed commit (kinsync-api too if it changed)
 
 ## 7. Decisions
@@ -125,6 +126,7 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 | `1b83e04` | 2026-10-09 | Store a repeated activity transition only once (round the converted time to whole seconds) |
 | `30b3f34` | 2026-10-09 | M5: "Your day so far" summary as the main screen: first unlock, unlocks, screen time, top apps, last moved, time per activity |
 | `a998296` | 2026-10-09 | M6: "My day" timeline: 24-hour band and time-ordered list of phone sessions (with apps), activity periods and movements; day picker |
+| `84af3ea` | 2026-10-09 | M7: version `0.2.0-phase2` for Review III |
 
 ## 10. Implementation steps
 
@@ -145,7 +147,7 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 | M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ✅ passed on the demo phone 2026-10-09 | `0d6ccac` |
 | M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ✅ passed on the demo phone 2026-10-09 | `30b3f34` |
 | M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker, opened from the summary (the summary stayed the main screen, decided at M5; debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ✅ passed on the demo phone 2026-10-09 | `a998296` |
-| M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | ⏳ | — |
+| M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | 🟡 docs, feature map, [demo script](../idp/reviews/review-3-material/demo-script.md) and version done; run-through passed on the demo phone 2026-10-09; tag `review-3` pending | `84af3ea` |
 
 ### Nice-to-have (only after every Must step is ✅)
 
