@@ -26,7 +26,7 @@ Repo short names: **api** = [kinsync-api](https://github.com/nithinvin/kinsync-a
 | FR-2.5 | Transparency log screen | 2 → 4 | and: UI, `summary/`, `timeline/` | Phase-1 debug list; M5 "Your day so far" summary (`UnlockSummaryTest`, `ScreenTimeTest`, `ActivityDurationsTest`, `DailySummaryTest`, `SummaryContentTest`) and `30b3f34`; M6 "My day" timeline (`PhoneSessionsTest`, `ActivityPeriodsTest`, `MovementBurstsTest`, `DayTimelineTest`, `TimelineContentTest`) and `a998296` | ✅ (on-device; family-app view in Phase-4) |
 | FR-2.6 | Pause / travel mode | 4 | and: UI, collector | — | ⏳ |
 | FR-2.7 | Phone last-moved time (minimal motion check) | 2 | and: `movement/` (significant-motion trigger), `MonitoringService` | M3: `LastMovedStatusTest`, `MovementEventDaoTest`, `MigrationTest` (2 → 3, 1 → 3); and `a52fddd`; demo-phone walk test passed 2026-10-09 | ✅ |
-| FR-2.8 | Charging + call-activity signals | 2 | and: Event Collector | — | ⏳ |
+| FR-2.8 | Charging + call-activity signals | 2 → 3 (moved 2026-10-09) | and: Event Collector | — | ⏳ |
 | FR-3.1 | Rolling 14-day baseline | 3 | and: Baseline Engine | — | ⏳ |
 | FR-3.2 | Descriptive stats, ready after 7 days | 3 | and: Baseline Engine | — | ⏳ |
 | FR-3.3 | Nightly recompute | 3 | and: Baseline Engine (WorkManager) | — | ⏳ |

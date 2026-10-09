@@ -28,8 +28,8 @@ code repo, so `git checkout review-2` reproduces exactly what the panel saw.
 | Phase | Scope | Key requirements |
 |---|---|---|
 | 1 | Prove feasibility of both halves: Android unlock-event collection on a real device; self-hosted HTTPS backend with `/health`, `/health/db` | FR-2.1, FR-2.4, FR-7.1 (early), NFR-4, NFR-5 |
-| 2 | Android only: app-usage collection, last-moved time, activity recognition, charging + call activity, "My day" timeline + daily summary screens, local retention, early battery measurement (re-scoped 2026-10-04 after Review II) | FR-2.2, FR-2.3, FR-2.5 (precursor), FR-2.7, FR-2.8, NFR-3 |
-| 3 | Baseline engine, deviation detector + nudge, pairing + auth, real DB schema (Alembic), `/pair` `/devices/register` `/heartbeat`, heartbeat sync, scheduler dead-man's switch, FCM, first end-to-end escalation demo | FR-1, FR-3, FR-4, FR-5, FR-7.2 |
+| 2 | Android only: app-usage collection, last-moved time, activity recognition, "My day" timeline + daily summary screens (re-scoped 2026-10-04 after Review II; the Nice items — charging + call activity, local retention, early battery measurement, Phase-3 API draft — moved to Phase 3 on 2026-10-09) | FR-2.2, FR-2.3, FR-2.5 (precursor), FR-2.7 |
+| 3 | Baseline engine, deviation detector + nudge, pairing + auth, real DB schema (Alembic), `/pair` `/devices/register` `/heartbeat`, heartbeat sync, scheduler dead-man's switch, FCM, first end-to-end escalation demo. Nice, carried over from Phase 2: charging + call activity, 30-day local retention, early battery measurement, API draft before the backend work | FR-1, FR-3, FR-4, FR-5, FR-7.2; Nice: FR-2.8, NFR-1 retention, NFR-3 |
 | 4 | Caregiver app/UI, consent & transparency screens finished, pause mode, pilot users onboarded, testing & threshold tuning, battery measurement | FR-2.5, FR-2.6, FR-6, NFR-3, NFR-6 |
 | 5 | Polish, performance evaluation, documentation, Open House demo, final report | All |
 

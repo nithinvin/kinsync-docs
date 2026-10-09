@@ -37,8 +37,8 @@ demo: never uninstall the app or clear its data.
 - **What leaves the phone?** Nothing yet. From Phase 3 only an "I'm OK" heartbeat and the
   expected check-in window are sent.
 - **Battery?** Collection wakes only on screen events, the motion trigger, activity changes and
-  a 15-minute app-usage read. Measuring it is a nice-to-have (N4) and a Phase 4 target (under
-  5% a day).
+  a 15-minute app-usage read. A first measurement is planned in Phase 3, and meeting the target
+  (under 5% a day) is a Phase 4 goal.
 - **What if the phone maker's battery saver stops the app?** It runs as a foreground service
   and asks for a battery-optimisation exemption. On Xiaomi phones the "Autostart" setting can
   still block a restart after an update or reboot; until that is handled, open the app once

@@ -182,7 +182,7 @@ h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin
   <!-- PHASE 2 -->
   <section class="lane" style="--c:var(--now)">
     <div class="lane-head"><h2>Review III: Phase 2</h2><span class="count">8 of 8 must-haves built</span><p>12–16 Oct 2026 · collect every signal on the phone and show it</p></div>
-    <p class="note"><b>Answers the Review II panel:</b> "which features will be implemented?" The whole phase happens on the phone and nothing new leaves it. Approved by the team on 2026-10-08. <b>Every must-have is built and running on the demo phone (9 Oct 2026); the nice-to-haves follow if time allows.</b></p>
+    <p class="note"><b>Answers the Review II panel:</b> "which features will be implemented?" The whole phase happens on the phone and nothing new leaves it. Approved by the team on 2026-10-08. <b>Every must-have is built and running on the demo phone (9 Oct 2026). The five nice-to-haves moved to Phase 3, after Review III (decided 9 Oct 2026).</b></p>
 
     <h3><span class="chip must">Must-have</span> built</h3>
     <div class="grid done" style="--c:var(--done)">
@@ -196,19 +196,11 @@ h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin
       <div class="card"><h4>Feature map for the panel</h4><p>This page, refreshed for the review.</p><div class="meta"><span class="chip who d">Docs</span></div></div>
     </div>
 
-    <h3><span class="chip nice">Nice-to-have</span> not started yet</h3>
-    <div class="grid">
-      <div class="card nicecard"><h4>Charging events</h4><p>Plugged-in and unplugged times. No permission needed.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.8</span></div></div>
-      <div class="card nicecard"><h4>Call activity</h4><p>Number and times of calls only, never numbers or contacts. Needs a sensitive permission.</p><div class="meta"><span class="chip who a">Android</span><span class="req">FR-2.8</span></div></div>
-      <div class="card nicecard"><h4>30-day auto-delete</h4><p>Raw events older than 30 days are removed from the phone.</p><div class="meta"><span class="chip who a">Android</span><span class="req">NFR-1</span></div></div>
-      <div class="card nicecard"><h4>First battery measurement</h4><p>24 hours with and without collection, compared against the 5% target.</p><div class="meta"><span class="chip who a">Android</span><span class="req">NFR-3</span></div></div>
-      <div class="card nicecard"><h4>Draft of the Phase 3 API design</h4><p>Data shapes for pairing, devices and heartbeat, so the backend is ready to start.</p><div class="meta"><span class="chip who b">Backend</span></div></div>
-    </div>
   </section>
 
   <!-- LATER -->
   <section class="lane" style="--c:var(--p4)">
-    <div class="lane-head"><h2>Remaining phases</h2><span class="count">24 features</span><p>Review IV to the Open House · Jan–Apr 2027</p></div>
+    <div class="lane-head"><h2>Remaining phases</h2><span class="count">29 features</span><p>Review IV to the Open House · Jan–Apr 2027</p></div>
     <div class="phases">
       <div class="phase" style="--c:var(--p3);--soft:var(--p3-soft)">
         <div class="phase-title"><b>Phase 3 · Review IV</b><span>25–29 Jan 2027 · ~50% · core logic + first alert</span></div>
@@ -222,6 +214,11 @@ h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin
           <li><strong>Heartbeat from the phone</strong>Sends only "I'm OK" plus the expected check-in window.<div class="meta"><span class="chip must">Must</span><span class="chip who a">Android</span><span class="chip who b">Backend</span><span class="req">FR-7.2</span></div></li>
           <li><strong>Dead-man's switch</strong>The server raises an alert when a heartbeat is missed, even if the phone is off.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">FR-4.4</span></div></li>
           <li><strong>Push alert to caregivers</strong>Firebase Cloud Messaging.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span><span class="req">FR-4.5 · FR-5</span></div></li>
+          <li><strong>Draft of the Phase 3 API design</strong>Data shapes for pairing, devices and heartbeat, before the backend work starts.<div class="meta"><span class="chip nice">Nice</span><span class="chip who b">Backend</span><span class="req">from Phase 2</span></div></li>
+          <li><strong>Charging events</strong>Plugged-in and unplugged times. No permission needed.<div class="meta"><span class="chip nice">Nice</span><span class="chip who a">Android</span><span class="req">FR-2.8 · from Phase 2</span></div></li>
+          <li><strong>Call activity</strong>Number and times of calls only, never numbers or contacts. Needs a sensitive permission.<div class="meta"><span class="chip nice">Nice</span><span class="chip who a">Android</span><span class="req">FR-2.8 · from Phase 2</span></div></li>
+          <li><strong>30-day auto-delete</strong>Raw events older than 30 days are removed from the phone.<div class="meta"><span class="chip nice">Nice</span><span class="chip who a">Android</span><span class="req">NFR-1 · from Phase 2</span></div></li>
+          <li><strong>First battery measurement</strong>24 hours with and without collection, compared against the 5% target.<div class="meta"><span class="chip nice">Nice</span><span class="chip who a">Android</span><span class="req">NFR-3 · from Phase 2</span></div></li>
           <li><strong>Nightly database backups</strong>Needed before real data exists.<div class="meta"><span class="chip must">Must</span><span class="chip who b">Backend</span></div></li>
         </ul>
       </div>

@@ -1,10 +1,10 @@
 # Phase-2 — On-device Data Collection & Visualisation (Review III)
 
 **Review:** Review III, guide, 12–16 Oct 2026 (10 marks)
-**Status:** 🟡 In progress — re-scoped 2026-10-04 after Review II feedback; scope and the
-Must / Nice split approved by Nithin and Sri Hasini on 2026-10-08. Implementation follows the
-step plan in [§10](#10-implementation-steps): Must steps first, Nice steps only after every Must
-step is tested on the demo phone.
+**Status:** 🟡 Built, review pending — re-scoped 2026-10-04 after Review II feedback; scope and
+the Must / Nice split approved by Nithin and Sri Hasini on 2026-10-08. Every Must step (M0–M7)
+is done and tested on the demo phone. On 2026-10-09 the team decided to stop Phase-2 there: the
+Nice steps (N1–N5) move to Phase-3, after Review III ([§10](#10-implementation-steps)).
 **Owners:** backend — Nithin · Android app — Sri Hasini
 **Demoed commits:** kinsync-android `84af3ea` (tag `review-3`); kinsync-api unchanged
 
@@ -27,16 +27,16 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 | 1 | Must | **App-usage collection**: query `UsageStatsManager` periodically (WorkManager); store per-app foreground intervals / daily totals in Room, on-device only | android | FR-2.2, FR-2.4 | ✅ M2 and `9e67926` (tested on the demo phone 2026-10-08) |
 | 2 | Must | **Last-moved time**: minimally invasive motion check (significant-motion sensor), store each motion timestamp in Room; no step counting | android | FR-2.7 (new) | ✅ M3 and `a52fddd` — working on the demo phone (2026-10-09) |
 | 3 | Must | **Coarse activity** (still / walking / in-vehicle) via Activity Recognition Transition API; request the `ACTIVITY_RECOGNITION` runtime permission with a plain-language rationale screen | android | FR-2.3 | ✅ M4 `0d6ccac` — working on the demo phone (2026-10-09) |
-| 3a | Nice | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ⏳ |
-| 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
-| 4 | Must | **"My day" timeline screen**: unlocks, screen on/off, app-usage blocks, motion, activity, charging and call events on one 24-h timeline, with day picker | android | FR-2.5 (precursor) | ✅ M6 `a998296` — matches the demo phone (2026-10-09); charging and call events follow with N1 / N2 |
-| 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ✅ M5 `30b3f34` — all Must items, matches the demo phone (2026-10-09); charging and call count follow with N1 / N2 |
+| 3a | Nice | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ➡️ moved to Phase-3 (2026-10-09) |
+| 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ➡️ moved to Phase-3 (2026-10-09) |
+| 4 | Must | **"My day" timeline screen**: unlocks, screen on/off, app-usage blocks, motion, activity, charging and call events on one 24-h timeline, with day picker | android | FR-2.5 (precursor) | ✅ M6 `a998296` — matches the demo phone (2026-10-09); charging and call events moved to Phase-3 |
+| 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ✅ M5 `30b3f34` — all Must items, matches the demo phone (2026-10-09); charging and call count moved to Phase-3 |
 | 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ✅ M1 and `137a3fd` (tested on the demo phone 2026-10-08) |
-| 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ⏳ |
-| 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ⏳ |
+| 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ➡️ moved to Phase-3 (2026-10-09) |
+| 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ➡️ moved to Phase-3 (2026-10-09) |
 | 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | 🟡 M1–M6 done (115 JVM, 59 instrumented) |
 | 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | 🟡 requirements, traceability and review-2 done (`6350ab6`); data-model updated per step (M2 `e53112c`, M3, M4; M5 and M6 add no table) |
-| 11 | Nice | Draft of the Phase-3 API design (pairing, devices, heartbeat request/response shapes) | api, docs | — | ⏳ |
+| 11 | Nice | Draft of the Phase-3 API design (pairing, devices, heartbeat request/response shapes) | api, docs | — | ➡️ moved to Phase-3 (2026-10-09) |
 
 Priorities match the feature map: **Must** = needed for the Review III demo, **Nice** = if time
 allows. Backend: no new endpoints this phase; DB backups are postponed (see
@@ -149,21 +149,25 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 | M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker, opened from the summary (the summary stayed the main screen, decided at M5; debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ✅ passed on the demo phone 2026-10-09 | `a998296` |
 | M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | ✅ docs, feature map, [demo script](../idp/reviews/review-3-material/demo-script.md) and version done; run-through passed on the demo phone 2026-10-09; tagged `review-3` | `84af3ea` |
 
-### Nice-to-have (only after every Must step is ✅)
+### Nice-to-have — moved to Phase-3 (decided 2026-10-09)
+
+Every Must step was done by 2026-10-09. The team decided to show Phase-2 at Review III as it is
+and to move the Nice steps to Phase-3, after the review. They will be planned in `phase-3.md`.
 
 | Step | Deliverable | What gets built | Status | Commit |
 |---|---|---|---|---|
-| N1 | 3a | Charging plugged / unplugged times (no permission); shown on timeline and summary | ⏳ | — |
-| N2 | 3b | Call activity: count and times only, no numbers or contacts; `READ_CALL_LOG` permission screen; consent text updated | ⏳ | — |
-| N3 | 7 | Purge raw events older than 30 days (daily WorkManager job) | ⏳ | — |
-| N4 | 8 | Battery: 24-h drain with vs. without collection on the demo phone, recorded as NFR-3 evidence | ⏳ | — |
-| N5 | 11 | Phase-3 API draft (pairing, devices, heartbeat shapes) in `design/api-contract.md` | ⏳ | — |
+| N1 | 3a | Charging plugged / unplugged times (no permission); shown on timeline and summary | ➡️ Phase-3 | — |
+| N2 | 3b | Call activity: count and times only, no numbers or contacts; `READ_CALL_LOG` permission screen; consent text updated | ➡️ Phase-3 | — |
+| N3 | 7 | Purge raw events older than 30 days (daily WorkManager job) | ➡️ Phase-3 | — |
+| N4 | 8 | Battery: 24-h drain with vs. without collection on the demo phone, recorded as NFR-3 evidence | ➡️ Phase-3 | — |
+| N5 | 11 | Phase-3 API draft (pairing, devices, heartbeat shapes) in `design/api-contract.md` | ➡️ Phase-3 | — |
 
 ### Notes for the steps
 
 - **Timing:** Review III is 12–16 Oct 2026. M1–M6 need to be on the demo phone as early as
   possible so it has ≥ 2 days of data (DoD §6). If time runs short, M7 can shrink to the docs
-  and the tag; Nice steps move to Phase-3.
+  and the tag; Nice steps move to Phase-3. (Outcome: M7 was done in full, and the Nice steps
+  moved to Phase-3 by the team's decision on 2026-10-09.)
 - **Room migrations:** each step adds its table through a real migration (no destructive
   fallback), so the demo phone keeps its history. Schema export is switched on in M2 so the
   migrations can be tested.

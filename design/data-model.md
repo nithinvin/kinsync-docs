@@ -75,6 +75,6 @@ Each version step is a real migration that keeps earlier data (kinsync-android
 `data/Migrations.kt`); exported schemas live in kinsync-android `app/schemas/`. The summary
 (M5) and the timeline (M6) only read these tables, so version 4 is the Phase-2 schema.
 
-Phase-2 (still planned, Nice): charging and
+Planned for Phase-3 (Nice, moved from Phase-2 on 2026-10-09): charging and
 call events (times/counts only) — all on-device only; app names never leave the phone (NFR-1).
 Exact entities are recorded here when implemented.
