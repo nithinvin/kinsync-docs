@@ -30,12 +30,12 @@ individual contribution (2). See [../idp/guidelines.md](../idp/guidelines.md#4-e
 | 3a | Nice | **Charging events**: plugged / unplugged times (no permission needed) | android | FR-2.8 (new) | ⏳ |
 | 3b | Nice | **Call activity**: number and times of calls (no numbers/contacts stored); needs `READ_CALL_LOG` or `READ_PHONE_STATE` — sensitive permission, see §5 | android | FR-2.8 (new) | ⏳ |
 | 4 | Must | **"My day" timeline screen**: unlocks, screen on/off, app-usage blocks, motion, activity, charging and call events on one 24-h timeline, with day picker | android | FR-2.5 (precursor) | ⏳ |
-| 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ⏳ |
+| 5 | Must | **Daily summary screen**: first unlock, unlock count, total screen time, top apps, last moved, time per activity (still/walking/vehicle), charging, call count | android | FR-2.5 (precursor) | ✅ M5 `30b3f34` — all Must items, matches the demo phone (2026-10-09); charging and call count follow with N1 / N2 |
 | 6 | Must | Consent screen updated to name every signal now collected | android | FR-7.1 | ✅ M1 and `137a3fd` (tested on the demo phone 2026-10-08) |
 | 7 | Nice | Local retention: purge raw events older than N days (default 30) | android | NFR-1 | ⏳ |
 | 8 | Nice | **Battery measurement**: 24-h drain with vs. without collection on the demo phone, recorded as early NFR-3 evidence | android, docs | NFR-3 | ⏳ |
-| 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | 🟡 M1–M4 done (68 JVM, 42 instrumented) |
-| 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | 🟡 requirements, traceability and review-2 done (`6350ab6`); data-model updated per step (M2 `e53112c`, M3, M4) |
+| 9 | Must | Tests: DAO instrumented tests for new entities; JVM tests for movement-detection and summary logic (happy, error, edge, malformed) | android | — | 🟡 M1–M5 done (94 JVM, 51 instrumented) |
+| 10 | Must | Docs: requirements (FR-2.7, FR-2.8), data-model (new Room entities), traceability, review-2 response | docs | — | 🟡 requirements, traceability and review-2 done (`6350ab6`); data-model updated per step (M2 `e53112c`, M3, M4; M5 adds no table) |
 | 11 | Nice | Draft of the Phase-3 API design (pairing, devices, heartbeat request/response shapes) | api, docs | — | ⏳ |
 
 Priorities match the feature map: **Must** = needed for the Review III demo, **Nice** = if time
@@ -122,6 +122,8 @@ backend scheduler (dead-man's switch), FCM push. See [roadmap.md](roadmap.md).
 | `9e67926` | 2026-10-08 | M2: app-usage intervals (UsageStatsManager → Room v2 via migration), WorkManager every 15 min, restart after app update, "App usage today" on the debug screen |
 | `a52fddd` | 2026-10-08 | M3: "last moved" from the significant-motion trigger (time only), Room v3 via migration, "Last moved" on the debug screen |
 | `0d6ccac` | 2026-10-09 | M4: still / walking / in vehicle from the Activity Recognition Transition API, `ACTIVITY_RECOGNITION` permission screen, Room v4 via migration, activity section on the debug screen |
+| `1b83e04` | 2026-10-09 | Store a repeated activity transition only once (round the converted time to whole seconds) |
+| `30b3f34` | 2026-10-09 | M5: "Your day so far" summary as the main screen: first unlock, unlocks, screen time, top apps, last moved, time per activity |
 
 ## 10. Implementation steps
 
@@ -140,7 +142,7 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
 | M2 | 1, 9 | App usage: `UsageStatsManager.queryEvents()` → foreground intervals in a new Room table; periodic collection with WorkManager (15 min) and on app open; Room v1 → v2 migration that keeps Phase-1 unlock events; DAO + interval-builder tests | Use 2–3 apps, open KinSync → intervals appear on the debug screen; Phase-1 unlock history still there | ✅ | and `9e67926` |
 | M3 | 2, 9 | Last moved: `TYPE_SIGNIFICANT_MOTION` one-shot trigger, re-armed after each event, inside `MonitoringService`; timestamps only; "not available on this phone" when the sensor is missing; Room v3 | Leave phone still, then walk with it → a new "moved at" time appears | ✅ passed on the demo phone 2026-10-09 | and `a52fddd` |
 | M4 | 3, 9 | Coarse activity: Activity Recognition Transition API (still / walking / in vehicle) via Google Play services; `ACTIVITY_RECOGNITION` runtime permission screen (Android 10+) with plain-language rationale; Room v4 | Grant permission; walk → "walking", sit → "still" (transitions can take a minute or two) | ✅ passed on the demo phone 2026-10-09 | `0d6ccac` |
-| M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ⏳ | — |
+| M5 | 5, 9 | Daily summary screen: first unlock, unlock count, screen time, top apps, last moved, time per activity; summary logic in plain Kotlin with JVM tests | Numbers match what was done on the phone that day | ✅ passed on the demo phone 2026-10-09 | `30b3f34` |
 | M6 | 4, 9 | "My day" timeline screen: all signals on one 24-h timeline with a day picker; becomes the app's main screen (debug list stays reachable) | Timeline shows the day's unlocks, app blocks, movement and activity in the right order | ⏳ | — |
 | M7 | 0, 10 | Wrap-up: data-model and traceability updated, feature map statuses refreshed + PDF, demo script, version `0.2.0-phase2`, tag `review-3` at the demoed commit | Full demo run-through on the phone | ⏳ | — |
 
@@ -191,8 +193,15 @@ Status legend: ✅ done · 🟡 in progress · 👀 waiting for review/test · �
   short walk. "Last moved" also kept updating after this in-place install without a reboot, so
   the M3 delay is not caused by app updates and no reboot step is needed after an install.
   Open: Play services delivered one transition twice and the two copies were stored 1 ms apart
-  (the time-since-boot conversion drifted), so the unique index did not catch it. A fix is in
-  review; the one duplicate row stays on the phone and the M5 summary must tolerate repeats.
+  (the time-since-boot conversion drifted), so the unique index did not catch it. Fixed in
+  `1b83e04` (times rounded to whole seconds); the one duplicate row stays on the phone and the
+  M5 summary ignores a repeated "started".
+- **M5 on the demo phone (2026-10-09):** "Your day so far" is now the main screen. Its numbers
+  matched a separate count from the phone's database and the elder's own use that morning:
+  first unlock 04:09, 22 unlocks, screen time about 1 h 05 min, top apps Kindle, Chrome and
+  KinSync, still and walking times from the M4 walk. The home screen (`com.miui.home`, 9 min)
+  is correctly left out. App use is collected every 15 minutes, so the last few minutes can
+  be missing compared with HyperOS's own screen time.
 - **Testing setup (2026-10-08):** the demo phone is updated in place with `adb install -r`
   using the team's shared debug keystore, after a `run-as` copy of its database. Instrumented
   tests run only on an emulator (Gradle's `connectedAndroidTest` uninstalls the app from every
