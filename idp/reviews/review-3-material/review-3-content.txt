@@ -1,0 +1,248 @@
+KINSYNC - REVIEW III CONTENT
+BACSE291 Innovative Design Project, VIT Chennai, AY 2026-27
+Review III: 12-16 Oct 2026 (10 marks)
+Team: Nithin Vinayagamoorthy (backend and server), Sri Hasini Chowdhary G (Android app)
+Guide: Kanchana Devi V
+
+KinSync quietly learns an elderly person's normal phone rhythm on their own phone, and alerts
+family when that rhythm goes silent. Raw activity data never leaves the phone.
+
+
+============================================================
+PART A - CONTENT FOR EACH RUBRIC PARAMETER
+============================================================
+
+1. FOLLOW-UP ON REVIEW II OBSERVATIONS AND PROJECT PROGRESS (2 marks)
+
+Review II observation:
+- The panel was satisfied with the demo, but it was not clear which features are going to be
+  implemented.
+
+What we did about it:
+- Built a feature map: every planned feature, the phase it belongs to, its priority (must-have
+  or nice-to-have) and its status. It covers all six reviews and the final report.
+- Re-scoped Phase 2 so that every signal the elder's phone collects is built and visible in the
+  app, instead of starting with backend work the panel could not see.
+- Split the Phase 2 work into 8 must-have steps (M0-M7) and 5 nice-to-have steps (N1-N5).
+  The scope was approved by the team on 2026-10-08.
+
+Progress:
+- Phase 1 (Review II): done. 17 features built and demoed.
+- Phase 2 (Review III): done. 8 of 8 must-haves built, tested and running on the demo phone.
+- The demo phone has been collecting real data since 2026-09-14.
+- The 5 nice-to-haves (charging, call activity, 30-day auto-delete, battery measurement,
+  Phase 3 API draft) were moved to Phase 3 by a team decision on 2026-10-09, so that the
+  review build could stay stable on the phone.
+- Overall progress is in line with the ~30% expected at this review.
+
+
+2. REQUIREMENT ANALYSIS AND SYSTEM DESIGN REFINEMENT (2 marks)
+
+Requirements added or refined after Review II:
+- FR-2.7 (new): record when the phone was last moved, using a minimally invasive motion check.
+  Only the time is stored. No step counting. This is not fall detection.
+- FR-2.8 (new): charging events and call activity (counts and times only, never numbers or
+  contacts). Planned for Phase 3.
+- FR-2.5 (refined): the elder can see everything collected, in plain language. Phase 2 builds
+  the precursor: the daily summary and the "My day" timeline.
+- FR-7.1 (refined): consent now has a version number. A phone that agreed to the Phase 1 text
+  is asked again, because Phase 2 collects more.
+
+Design refinements:
+- On-phone database grew from 1 table to 4 through real migrations
+  (version 1 to version 4), and every upgrade kept the existing data on the demo phone:
+  unlock events, app-usage intervals, movement times, activity transitions.
+- App usage is stored as intervals (which app, from when, until when), read every 15 minutes.
+- The daily summary and the timeline are pure logic on top of these tables. They add no new
+  table, so they can be tested on a computer without a phone.
+- The home screen (launcher) is not counted as app use.
+- Privacy by construction is unchanged: the server still has no table that could hold raw
+  activity. Only an "I'm OK" heartbeat and the expected check-in window will be sent, from
+  Phase 3.
+- Every requirement is tracked against its phase, commit and status in a traceability matrix.
+
+
+3. COMPONENT / TOOL SELECTION AND TECHNICAL JUSTIFICATION (2 marks)
+
+Android (elder's phone):
+- Kotlin with Jetpack Compose (Material 3): the modern Android standard; large-text theme for
+  elderly users.
+- Room (on-device SQLite): raw data stays on the phone; real migrations keep months of data.
+- WorkManager: reliable periodic work (app usage every 15 minutes) that survives restarts and
+  respects battery limits.
+- UsageStatsManager: the official Android API for which apps were used and when.
+- Significant-motion sensor: a one-shot hardware trigger that costs almost no battery. Chosen
+  over continuous accelerometer sampling and step counting, which are more invasive and
+  drain the battery.
+- Activity Recognition Transition API (Google Play services): still / walking / in vehicle
+  without GPS and without a location permission.
+- Foreground service: stops the phone maker's battery saver from killing collection.
+- minSdk 26 (Android 8.0): covers the phones elderly users actually have (ADR-0003).
+- Manual dependency injection instead of a framework: the app is still small (ADR-0004).
+
+Backend (server):
+- Self-hosted Hetzner VM instead of a backend-as-a-service: the team learns API design,
+  databases, scheduling and Linux administration (ADR-0001).
+- FastAPI + PostgreSQL: async, automatic API docs, input validation, relational fit for
+  pairings, heartbeats and alerts (ADR-0002).
+- Caddy: automatic HTTPS certificates from Let's Encrypt.
+- systemd services instead of Docker: simpler to run and debug on one server (ADR-0006).
+- noip.com dynamic DNS: free hostname kinsync.ddns.net, no domain purchase (ADR-0005).
+- Planned for Phase 3: Firebase Cloud Messaging only as a push relay, APScheduler for the
+  dead-man's switch.
+
+Each lasting choice is recorded as an Architecture Decision Record (ADR) with the
+alternatives considered.
+
+
+4. INITIAL PROTOTYPE / MODULE DEVELOPMENT AND EARLY TESTING (2 marks)
+
+Modules built in Phase 2 (app version 0.2.0-phase2, tag review-3):
+- Versioned consent screen listing every signal collected.
+- App-usage collector.
+- "Last moved" collector.
+- Activity collector (still / walking / in vehicle) with its own permission screen.
+- "Your day so far" daily summary: the app's main screen.
+- "My day" timeline: the whole day on one 24-hour band plus a time-ordered list, with a day
+  picker to look at earlier days.
+
+Testing:
+- 115 logic tests run on the computer (JVM), all passing.
+- 59 database and screen tests run on an Android emulator, all passing.
+- Each step was tested on the real demo phone before the next step started.
+- Database upgrades from version 1 to version 4 kept all earlier data on the demo phone.
+- The summary and timeline numbers were checked against a separate count from the phone's
+  database (for example, 22 unlocks on the test day matched exactly).
+- Backend quality gate: lint, type checks, security scan, complexity limits and tests with at
+  least 90% coverage.
+
+Known issue found by testing:
+- On Xiaomi phones the "Autostart" setting can block the automatic restart after an update or
+  reboot. Workaround: open the app once after either. A proper fix is planned.
+
+
+5. INDIVIDUAL CONTRIBUTION, TECHNICAL UNDERSTANDING AND NEXT-STAGE RESPONSIBILITY (2 marks)
+
+Sri Hasini Chowdhary G - Android app (kinsync-android):
+- Phase 1: onboarding, permissions, unlock-event collection, debug screen, backend check.
+- Phase 2: versioned consent, app-usage intervals, "last moved", activity recognition,
+  daily summary, "My day" timeline, database migrations and tests.
+- Phase 3 (planned): baseline learning, deviation check with the "Everything OK?" nudge,
+  elder / caregiver role choice, pairing screen, heartbeat sender, charging and call activity,
+  30-day auto-delete, battery measurement.
+
+Nithin Vinayagamoorthy - Backend, server and documentation (kinsync-api, kinsync-docs):
+- Phase 1: hardened server, HTTPS, PostgreSQL, FastAPI service with health endpoints,
+  automated quality gate.
+- Phase 2: kept the server running, Phase 2 plan, feature map, requirements, traceability,
+  runbooks.
+- Phase 3 (planned): Phase 3 API design, server database tables, pairing and device
+  registration with secure tokens, heartbeat endpoint, dead-man's switch, push alerts,
+  nightly backups.
+
+
+============================================================
+PART B - ONE-LINERS: WHAT WAS BUILT
+============================================================
+
+PHASE 1 - REVIEW II (21-25 Sep 2026) - done
+
+Android:
+- Consent screen: plain-language explanation before anything is collected.
+- Usage-access permission: rationale screen, then a link to Android Settings.
+- Battery-optimisation exemption: keeps collection alive.
+- Unlock and screen on/off capture in a foreground service.
+- Restarts after reboot, only if the elder has given consent.
+- On-phone database: events stored locally, nothing uploaded.
+- Live event list: debug screen shows new unlocks within seconds.
+- Stop monitoring: revokes consent and stops collection.
+- Backend reachability check over HTTPS on launch.
+- Large-text theme for elderly users.
+
+Backend:
+- Hardened cloud server: key-only SSH, firewall, fail2ban, automatic security updates.
+- HTTPS with automatic certificates (Caddy + Let's Encrypt).
+- FastAPI service that restarts itself on failure.
+- PostgreSQL database reachable only from the server.
+- Live health endpoints: /health and /health/db.
+- Automated quality gate with at least 90% test coverage.
+
+Docs:
+- Specs, design, plan, runbooks and traceability matrix.
+
+PHASE 2 - REVIEW III (12-16 Oct 2026) - done, 8 of 8 must-haves
+
+- App-usage pattern: which apps were used and when, read every 15 minutes.
+- Last moved: low-power motion sensor, stores only the time, no step counting.
+- Activity: still, walking or in a vehicle, with a plain-language permission screen.
+- "My day" timeline: all signals on one 24-hour view, with a day picker.
+- Daily summary: first unlock, unlocks, screen time, top apps, last moved, time per activity.
+- Consent screen lists every signal and asks again when the list changes.
+- Tests for every new collector: 115 logic tests and 59 device tests, all passing.
+- Feature map for the panel: every feature, its phase and its status.
+
+
+============================================================
+PART C - ONE-LINERS: WHAT IS PLANNED FOR THE REMAINING REVIEWS
+============================================================
+
+PHASE 3 - REVIEW IV (25-29 Jan 2027, ~50%) - core logic and first alert
+
+Must-have:
+- Baseline learning: a rolling 14-day pattern, ready after 7 days.
+- Deviation check with an "Everything OK?" nudge before anyone is alarmed.
+- Elder / caregiver role choice in the app.
+- Pairing with a 6-digit code, up to 3 caregivers per elder.
+- Device registration with secure tokens.
+- Server database tables: elders, caregivers, pairings, heartbeats, alerts (no raw activity).
+- Heartbeat from the phone: only "I'm OK" and the expected check-in window.
+- Dead-man's switch: the server raises an alert when a heartbeat is missed, even if the phone
+  is off.
+- Push alert to caregivers through Firebase Cloud Messaging.
+- Nightly database backups before real data exists.
+
+Nice-to-have (moved from Phase 2):
+- Phase 3 API design draft before the backend work starts.
+- Charging events: plugged-in and unplugged times.
+- Call activity: number and times of calls only, never numbers or contacts.
+- 30-day auto-delete of raw events on the phone.
+- First battery measurement: 24 hours with and without collection.
+
+PHASE 4 - REVIEW V (8-12 Mar 2027, ~80%) - caregiver side and validation
+
+- Caregiver dashboard: each elder shown as normal, nudged or escalated.
+- Acknowledge and resolve alerts.
+- Activity trend for caregivers, aggregated only (nice-to-have).
+- Transparency screen: everything collected, in plain language.
+- Pause / travel mode.
+- View and remove caregivers; revoking consent unpairs everyone.
+- Pilot users and threshold tuning for fewer false alarms.
+- Battery target: under 5% extra a day.
+- Test plan and results: end-to-end and reliability tests.
+
+PHASE 5 - REVIEW VI / OPEN HOUSE (29 Mar-2 Apr 2027, 100%) and REPORT (2 Apr 2027)
+
+- Polish and accessibility pass.
+- Performance evaluation: alert delay, false-alarm rate, battery.
+- Open House demo kit: two phones, live alert, backup video.
+- Final report in the prescribed format.
+- SMS fallback for caregivers (nice-to-have).
+
+
+============================================================
+PRIVACY PROMISE (applies to every phase)
+============================================================
+
+- Raw data (unlocks, app names, motion, calls) stays on the phone.
+- Only an "I'm OK" heartbeat and the expected check-in window are sent to the server.
+- The server has no table that could hold raw activity.
+- No GPS location, ever.
+
+Out of scope for version 1: fall detection, medical diagnosis, step counting, GPS tracking,
+wearables, iOS, audio or video monitoring, multiple languages, more than 3 caregivers per
+elder.
+
+Repositories:
+- github.com/nithinvin/kinsync-docs: specs, design, roadmap
+- github.com/nithinvin/kinsync-android: phone app
+- github.com/nithinvin/kinsync-api: server
