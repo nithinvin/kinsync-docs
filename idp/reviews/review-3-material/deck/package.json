@@ -1,0 +1,21 @@
+{
+  "name": "kinsync-review-3-deck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Builds the KinSync Review III slide deck (KinSync_Review_III.pptx).",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "jszip": "3.10.2",
+    "pptxgenjs": "4.0.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-icons": "5.7.0",
+    "sharp": "0.35.5"
+  }
+}

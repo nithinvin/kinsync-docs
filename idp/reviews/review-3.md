@@ -5,7 +5,7 @@
 - **Marks:** _(fill in if disclosed)_ / 10
 - **Phase demoed:** [phase-2](../../plan/phase-2.md)
 - **Commits demoed:** kinsync-android `84af3ea` (tag `review-3`) · kinsync-api not changed for this phase (the server runs `e5f0ca1`; `main` at `fa10064` adds only docs and deploy files)
-- **Material:** [feature map](review-3-material/KinSync_Feature_Map.pdf) ([HTML source](review-3-material/feature-map.html)), [demo script](review-3-material/demo-script.md), [slide deck](review-3-material/KinSync_Review_III.pptx), [content for each rubric parameter](review-3-material/review-3-content.txt), debug APK
+- **Material:** [feature map](review-3-material/KinSync_Feature_Map.pdf) ([HTML source](review-3-material/feature-map.html)), [demo script](review-3-material/demo-script.md), [slide deck](review-3-material/KinSync_Review_III.pptx) ([source](review-3-material/deck/)), [content for each rubric parameter](review-3-material/review-3-content.txt), debug APK
 
 ## What we presented
 - Answer to Review II observation 1: the feature map, every feature → phase → status.
